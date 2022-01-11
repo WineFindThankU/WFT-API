@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon app.js --exec babel-node",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -14,11 +15,5 @@
     "express": "^4.17.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.16.7",
-    "@babel/core": "^7.16.7",
-    "@babel/node": "^7.16.7",
-    "@babel/polyfill": "^7.12.1",
-    "@babel/preset-env": "^7.16.7",
-    "babel-loader": "^8.2.3"
   }
 }
