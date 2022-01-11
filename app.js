@@ -1,4 +1,6 @@
-require('dotenv').config()
+import { config } from 'dotenv'
+config()
+
 const { PORT } = process.env
 
 import express from 'express'
