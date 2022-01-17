@@ -1,14 +1,22 @@
 import { config } from 'dotenv'
+import { join } from 'path'
+import { createServer } from 'http'
 import express from 'express'
 import router from './routes/index.js'
 
-export const createServer = () => {
-  config()
+const App = () => {
+  if (process.env.NODE_ENV === 'test') {
+    config({
+      path: join(process.cwd(), '.env.test'),
+    })
+  } else {
+    config()
+  }
 
   const { PORT } = process.env
+  const port = PORT || 4000
 
   const app = express()
-  const port = PORT || 4000
 
   app.use(router)
 
@@ -16,9 +24,11 @@ export const createServer = () => {
     res.send('WFT API')
   })
 
-  app.listen(port)
+  const server = createServer(app)
 
-  return app
+  server.listen(port)
+
+  return server
 }
 
-createServer()
+export default App()
