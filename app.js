@@ -1,14 +1,24 @@
 import { config } from 'dotenv'
-config()
-
-const { PORT } = process.env
-
 import express from 'express'
-const app = express()
-const port = PORT || 4000
+import router from './routes/index.js'
 
-app.get('/', (req, res) => {
-  res.send('WFT API')
-})
+export const createServer = () => {
+  config()
 
-app.listen(port)
+  const { PORT } = process.env
+
+  const app = express()
+  const port = PORT || 4000
+
+  app.use(router)
+
+  app.get('/', (req, res) => {
+    res.send('WFT API')
+  })
+
+  app.listen(port)
+
+  return app
+}
+
+createServer()
