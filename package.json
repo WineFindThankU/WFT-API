@@ -6,7 +6,13 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon app.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "db:push": "npx prisma db push",
+    "db:pull": "npx prisma db pull",
+    "generate": "npx prisma generate",
+
+    "test": "dotenv -e .env.test -- node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "tdb:push": "dotenv -e .env.test -- npx prisma db push",
+    "tdb:pull": "dotenv -e .env.test -- npx prisma db pull"
   },
   "author": "",
   "license": "ISC",
