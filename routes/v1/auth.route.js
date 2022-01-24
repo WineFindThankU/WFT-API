@@ -4,11 +4,12 @@ import {
   signCheck,
   tokenRefresh,
 } from '../../controllers/auth.controller.js'
+import { authLocal, authJWT, authJWTRefresh } from '../../utils/passport.js'
 
 const router = Router()
 
-router.post('/sign', signIn)
-router.get('/sign', signCheck)
-router.post('/sign/new', tokenRefresh)
+router.post('/sign', authLocal, signIn)
+router.get('/sign', authJWT, signCheck)
+router.post('/sign/new', authJWTRefresh, tokenRefresh)
 
 export default router
