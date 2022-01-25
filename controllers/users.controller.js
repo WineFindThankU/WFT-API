@@ -5,7 +5,7 @@ import {
 } from '../services/users.service.js'
 
 export const signUp = async (req, res, next) => {
-  const { id, pwd, regist_type } = req.body
+  const { id, pwd, regist_type, data } = req.body
 
   const userCheck = await findUserById(id)
 
@@ -20,9 +20,9 @@ export const signUp = async (req, res, next) => {
   const registType = regist_type.toUpperCase()
 
   if (registType === 'EMAIL') {
-    await createEmailUser(id, pwd)
+    await createEmailUser(id, pwd, data)
   } else {
-    await createSnsUser(id, pwd, registType)
+    await createSnsUser(id, pwd, data, registType)
   }
 
   return res.status(201).json({

@@ -3,12 +3,13 @@ const { PrismaClient } = pkg
 const prisma = new PrismaClient()
 import { hash } from 'bcrypt'
 
-export const createEmailUser = async (id, pwd) => {
+export const createEmailUser = async (id, pwd, data) => {
   try {
     await prisma.user.create({
       data: {
         us_id: id,
         us_pwd: await hash(pwd, 10),
+        us_data: data,
       },
     })
   } catch (e) {
@@ -16,12 +17,13 @@ export const createEmailUser = async (id, pwd) => {
   }
 }
 
-export const createSnsUser = async (id, sns_id, regist_type) => {
+export const createSnsUser = async (id, sns_id, data, regist_type) => {
   try {
     await prisma.user.create({
       data: {
         us_id: id,
         us_sns_id: await hash(sns_id, 10),
+        us_data: data,
         regist_type: regist_type,
       },
     })

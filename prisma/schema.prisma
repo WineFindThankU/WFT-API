@@ -45,4 +45,5 @@ enum RegistType {
   KAKAO
   GOOGLE
   APPLE
+  FACEBOOK
 }

@@ -9,7 +9,6 @@
     "db:push": "npx prisma db push",
     "db:pull": "npx prisma db pull",
     "generate": "npx prisma generate",
-
     "test": "dotenv -e .env.test -- node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "tdb:push": "dotenv -e .env.test -- npx prisma db push",
     "tdb:pull": "dotenv -e .env.test -- npx prisma db pull"
@@ -21,6 +20,7 @@
     "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
+    "express-validator": "^6.14.0",
     "jsonwebtoken": "^8.5.1",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",

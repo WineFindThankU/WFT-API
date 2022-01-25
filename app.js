@@ -1,9 +1,12 @@
 import { config } from 'dotenv'
 import { join } from 'path'
 import { createServer } from 'http'
+
 import express from 'express'
-import router from './routes/index.js'
+
 import { setPassport } from './utils/passport.js'
+
+import router from './routes/index.js'
 
 const App = () => {
   if (process.env.NODE_ENV === 'test') {
