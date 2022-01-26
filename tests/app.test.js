@@ -27,7 +27,7 @@ describe('App', () => {
     it('회원가입 (Post:/v1/users)', async () => {
       return request(app)
         .post('/v1/users')
-        .send({ id: mainTestID, pwd: mainTestPWD, regist_type: 'email' })
+        .send({ id: mainTestID, pwd: mainTestPWD, us_type: 'email' })
         .expect(201)
     })
   })

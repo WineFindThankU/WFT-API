@@ -28,7 +28,7 @@ export const setPassport = () => {
           })
         }
 
-        const { us_pwd, refresh_token, ...userData } = user
+        const { us_pwd, us_token, ...userData } = user
 
         return cb(null, userData)
       },
@@ -56,7 +56,7 @@ export const setPassport = () => {
 
         const refreshToken = req.get('authorization').replace('Bearer ', '')
 
-        const isMatch = await compare(refreshToken, user.refresh_token)
+        const isMatch = await compare(refreshToken, user.us_token)
 
         if (!isMatch) {
           return cb(null, false, {
@@ -66,7 +66,7 @@ export const setPassport = () => {
           })
         }
 
-        const { us_pwd, refresh_token, ...userData } = user
+        const { us_pwd, us_token, ...userData } = user
 
         return cb(null, userData)
       },
@@ -91,12 +91,12 @@ export const setPassport = () => {
           })
         }
 
-        if (user.regist_type.toUpperCase() === 'EMAIL') {
+        if (user.us_type.toUpperCase() === 'EMAIL') {
           if (!(await compare(pwd, user.us_pwd))) {
             return cb(null, false, {
               statusCode: 401,
               error: 'SignUnauthorized',
-              message: '비밀번호가 일치하지 않습니다.',
+              message: '로그인 실패',
             })
           }
         } else {
@@ -104,7 +104,7 @@ export const setPassport = () => {
             return cb(null, false, {
               statusCode: 401,
               error: 'SignUnauthorized',
-              message: '소셜 아이디 일치하지 않습니다.',
+              message: '로그인 실패',
             })
           }
         }

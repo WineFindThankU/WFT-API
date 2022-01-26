@@ -5,7 +5,7 @@ import {
 } from '../services/users.service.js'
 
 export const signUp = async (req, res, next) => {
-  const { id, pwd, regist_type, data } = req.body
+  const { id, pwd, type, ...data } = req.body
 
   const userCheck = await findUserById(id)
 
@@ -17,12 +17,29 @@ export const signUp = async (req, res, next) => {
     })
   }
 
-  const registType = regist_type.toUpperCase()
+  const UserType = type.toUpperCase()
 
-  if (registType === 'EMAIL') {
-    await createEmailUser(id, pwd, data)
-  } else {
-    await createSnsUser(id, pwd, data, registType)
+  const tempData = {}
+  data.nick && (tempData.us_nick = data.nick)
+  data.birth && (tempData.us_birthday = data.birth)
+  data.age && (tempData.us_age = data.age)
+  data.gender && (tempData.us_gender = data.gender.toUpperCase())
+  data.taste && (tempData.taste_type = data.taste)
+  data.taste_data && (tempData.taste_data = data.taste_data)
+
+  try {
+    if (UserType === 'EMAIL') {
+      await createEmailUser(id, pwd, tempData)
+    } else {
+      await createSnsUser(id, pwd, UserType, tempData)
+    }
+  } catch (e) {
+    console.log(e)
+    return res.status(400).json({
+      statusCode: 400,
+      error: 'REQEST_ERROR',
+      message: 'Request Error',
+    })
   }
 
   return res.status(201).json({

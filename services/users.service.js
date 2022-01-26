@@ -4,32 +4,24 @@ const prisma = new PrismaClient()
 import { hash } from 'bcrypt'
 
 export const createEmailUser = async (id, pwd, data) => {
-  try {
-    await prisma.user.create({
-      data: {
-        us_id: id,
-        us_pwd: await hash(pwd, 10),
-        us_data: data,
-      },
-    })
-  } catch (e) {
-    console.log(e)
-  }
+  await prisma.user.create({
+    data: {
+      us_id: id,
+      us_pwd: await hash(pwd, 10),
+      ...data,
+    },
+  })
 }
 
-export const createSnsUser = async (id, sns_id, data, regist_type) => {
-  try {
-    await prisma.user.create({
-      data: {
-        us_id: id,
-        us_sns_id: await hash(sns_id, 10),
-        us_data: data,
-        regist_type: regist_type,
-      },
-    })
-  } catch (e) {
-    console.log(e)
-  }
+export const createSnsUser = async (id, sns_id, us_type, data) => {
+  await prisma.user.create({
+    data: {
+      us_id: id,
+      us_sns_id: await hash(sns_id, 10),
+      us_type: us_type,
+      ...data,
+    },
+  })
 }
 
 export const findUserById = async (id) => {
@@ -55,7 +47,7 @@ export const updateRefreshToken = async (id, refreshToken) => {
       us_id: id,
     },
     data: {
-      refresh_token: hashRefreshToken,
+      us_token: hashRefreshToken,
     },
   })
 }

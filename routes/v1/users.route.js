@@ -11,8 +11,7 @@ router.post(
   [
     body('id').isEmail().withMessage('ID_REQUIRED'),
     body('pwd').isString().withMessage('PWD_REQUIRED'),
-    body('regist_type').isString().withMessage('REGIST_TYPE_REQUIRED'),
-    body('data').isJSON().withMessage('DATA_REQUIRED'),
+    body('type').isString().withMessage('TYPE_REQUIRED'),
     validationFunc,
   ],
   signUp,

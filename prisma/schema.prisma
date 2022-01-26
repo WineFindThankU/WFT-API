@@ -9,22 +9,23 @@ datasource db {
 }
 
 model User {
-  us_no         String     @id @default(cuid())
-  us_id         String     @unique @db.VarChar(100)
-  us_pwd        String?    @db.VarChar(255)
-  us_sns_id     String?    @db.VarChar(255)
-  refresh_token String?    @db.VarChar(255)
-  regist_type   RegistType @default(EMAIL)
-  us_nick       String?    @unique @db.VarChar(20)
-  us_birthday   DateTime?
-  us_age        Int?       @db.SmallInt
-  us_gender     Gender?
-  us_role       UserRole   @default(USER)
-  us_data       Json?
-  created_at    DateTime   @default(now())
-  updated_at    DateTime   @updatedAt
+  us_no           String     @id @default(cuid())
+  us_id           String     @unique @db.VarChar(100)
+  us_nick         String?    @unique @db.VarChar(20)
+  us_pwd          String?    @db.VarChar(255)
+  us_sns_id       String?    @db.VarChar(255)
+  us_birthday     DateTime?
+  us_age          Int?       @db.SmallInt
+  us_gender       Gender?
+  us_token        String?    @db.VarChar(255)
+  us_type         UserType   @default(EMAIL)
+  us_role         UserRole   @default(USER)
+  taste_type      Int?       @db.SmallInt
+  taste_data      Json?
+  created_at      DateTime   @default(now())
+  updated_at      DateTime   @updatedAt
 
-  @@index([regist_type])
+  @@index([us_type])
   @@index([us_gender])
   @@map("tb_user")
 }
@@ -34,16 +35,16 @@ enum UserRole {
   ADMIN
 }
 
-enum Gender {
-  MAN
-  WOMAN
-}
-
-enum RegistType {
+enum UserType {
   EMAIL
   NAVER
   KAKAO
   GOOGLE
   APPLE
   FACEBOOK
+}
+
+enum Gender {
+  MALE
+  FEMALE
 }
