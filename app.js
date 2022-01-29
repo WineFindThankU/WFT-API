@@ -6,7 +6,7 @@ dotenv.config()
 const { PORT } = process.env
 
 const app = express()
-const port = PORT || 4000
+const port = PORT ?? 4000
 
 app.get('/', (req, res) => {
   res.send('WFT API')
