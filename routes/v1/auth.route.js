@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import {
   signIn,
+  signOut,
   signCheck,
   tokenRefresh,
 } from '../../controllers/auth.controller.js'
@@ -22,6 +23,7 @@ router.post(
   signIn,
 )
 router.get('/sign', authJWT, signCheck)
+router.delete('/sign', authJWT, signOut)
 router.post('/sign/new', authJWTRefresh, tokenRefresh)
 
 export default router

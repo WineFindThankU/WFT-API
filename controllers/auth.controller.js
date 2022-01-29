@@ -1,5 +1,8 @@
 import { getAccessToken, getRefreshToken } from '../services/auth.service.js'
-import { updateRefreshToken } from '../services/users.service.js'
+import {
+  updateRefreshToken,
+  deleteRefreshToken,
+} from '../services/users.service.js'
 
 const signIn = async (req, res, next) => {
   const user = req.user
@@ -16,6 +19,17 @@ const signIn = async (req, res, next) => {
       accessToken: accessToken,
       refreshToken: refreshToken,
     },
+  })
+}
+
+const signOut = async (req, res, next) => {
+  const user = req.user
+
+  await deleteRefreshToken(user.us_id)
+
+  return res.status(200).json({
+    statusCode: 200,
+    message: '로그아웃 성공',
   })
 }
 
@@ -41,4 +55,4 @@ const signCheck = (req, res, next) => {
     .json({ statusCode: 200, message: '로그인 상태입니다.' })
 }
 
-export { signIn, tokenRefresh, signCheck }
+export { signIn, signOut, tokenRefresh, signCheck }

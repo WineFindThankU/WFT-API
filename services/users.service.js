@@ -51,3 +51,14 @@ export const updateRefreshToken = async (id, refreshToken) => {
     },
   })
 }
+
+export const deleteRefreshToken = async (id) => {
+  await prisma.user.update({
+    where: {
+      us_id: id,
+    },
+    data: {
+      us_token: null,
+    },
+  })
+}
