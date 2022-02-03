@@ -10,7 +10,7 @@ const signIn = async (req, res, next) => {
   const accessToken = getAccessToken(user)
   const refreshToken = getRefreshToken(user)
 
-  await updateRefreshToken(user.us_id, refreshToken)
+  await updateRefreshToken(user.us_no, refreshToken)
 
   return res.status(201).json({
     statusCode: 201,
@@ -25,7 +25,7 @@ const signIn = async (req, res, next) => {
 const signOut = async (req, res, next) => {
   const user = req.user
 
-  await deleteRefreshToken(user.us_id)
+  await deleteRefreshToken(user.us_no)
 
   return res.status(200).json({
     statusCode: 200,
@@ -48,8 +48,6 @@ const tokenRefresh = (req, res, next) => {
 }
 
 const signCheck = (req, res, next) => {
-  console.log(req.user)
-
   return res
     .status(200)
     .json({ statusCode: 200, message: '로그인 상태입니다.' })

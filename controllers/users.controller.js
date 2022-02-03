@@ -1,49 +1,90 @@
+import { compare } from 'bcrypt'
+import moment from 'moment'
+
 import {
   createEmailUser,
   createSnsUser,
   findUserById,
+  findUserBySnsId,
+  checkNick,
+  updateTaste,
 } from '../services/users.service.js'
 
 export const signUp = async (req, res, next) => {
-  const { id, pwd, type, ...data } = req.body
+  const { id, pwd, sns_id, type, ...data } = req.body
 
-  const userCheck = await findUserById(id)
+  let user
 
-  if (userCheck) {
-    return res.status(409).json({
-      statusCode: 409,
-      error: 'CONFLICT',
-      message: '사용하고 있는 아이디 입니다.',
-    })
+  if (type === 'EMAIL') {
+    user = await findUserById(id, type)
+  } else {
+    user = await findUserBySnsId(sns_id)
   }
 
-  const UserType = type.toUpperCase()
-
-  const tempData = {}
-  data.nick && (tempData.us_nick = data.nick)
-  data.birth && (tempData.us_birthday = data.birth)
-  data.age && (tempData.us_age = data.age)
-  data.gender && (tempData.us_gender = data.gender.toUpperCase())
-  data.taste && (tempData.taste_type = data.taste)
-  data.taste_data && (tempData.taste_data = data.taste_data)
-
-  try {
-    if (UserType === 'EMAIL') {
-      await createEmailUser(id, pwd, tempData)
-    } else {
-      await createSnsUser(id, pwd, UserType, tempData)
+  if (!user) {
+    if (data.nick && (await checkNick(data.nick))) {
+      return res.status(409).json({
+        statusCode: 409,
+        error: 'CONFLICT_NICK',
+        message: '사용하고 있는 닉네임 입니다.',
+      })
     }
-  } catch (e) {
-    console.log(e)
-    return res.status(400).json({
-      statusCode: 400,
-      error: 'REQEST_ERROR',
-      message: 'Request Error',
+
+    const tempData = {}
+
+    const add = (target, source) => {
+      source && (tempData[target] = source)
+    }
+
+    add('us_birthday', moment(data.birthday).utc().toDate())
+    add('us_nick', data.nick)
+    add('us_age', data.age)
+    add('us_gender', data.gender)
+    add('taste_type', data.taste_type)
+    add('taste_data', data.taste_data)
+
+    try {
+      if (type === 'EMAIL') {
+        await createEmailUser(id, pwd, tempData)
+      } else {
+        await createSnsUser(id, pwd, type, tempData)
+      }
+    } catch (e) {
+      console.log(e)
+      return res.status(400).json({
+        statusCode: 400,
+        error: 'REQEST_ERROR',
+        message: 'Request Error',
+      })
+    }
+
+    return res.status(201).json({
+      statusCode: 201,
+      message: '회원가입 성공',
+    })
+  } else {
+    if (type === 'EMAIL' && !(await compare(pwd, user.us_pwd))) {
+      return res.status(401).json({
+        statusCode: 401,
+        error: 'SignUnauthorized',
+        message: '취향 업데이트 실패',
+      })
+    }
+
+    try {
+      await updateTaste(user.us_no, data.taste_type, data.taste_data)
+    } catch (e) {
+      console.log(e)
+      return res.status(400).json({
+        statusCode: 400,
+        error: 'REQEST_ERROR',
+        message: 'Request Error',
+      })
+    }
+
+    return res.status(201).json({
+      statusCode: 201,
+      message: '취향 업데이트 성공',
     })
   }
-
-  return res.status(201).json({
-    statusCode: 201,
-    message: '회원가입 성공',
-  })
 }

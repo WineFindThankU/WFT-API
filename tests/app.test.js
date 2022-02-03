@@ -9,15 +9,50 @@ describe('App', () => {
   let accessToken
   let refreshToken
 
+  const mainID = 'test@test.com'
   const mainPWD = '1234'
+
   const main = {
-    us_id: 'test@test.com',
-    us_nick: 'test',
+    us_id: mainID,
+    us_type: 'EMAIL',
     us_pwd: hashSync(mainPWD, 10),
+    us_nick: 'test',
+    taste_type: 1,
+    taste_data: {
+      1: {
+        value: '1',
+      },
+      2: {
+        value: '2',
+      },
+      3: {
+        value: '-1',
+        etc: 'only 소주',
+      },
+    },
   }
 
-  const subID = 'test1@test.com'
-  const subPWD = '1234'
+  const test = {
+    id: 'test1@test.com',
+    type: 'email',
+    pwd: '1234',
+    nick: 'test1',
+    age: 22,
+    gender: 'male',
+    taste_type: 1,
+    taste_data: {
+      1: {
+        value: '1',
+      },
+      2: {
+        value: '2',
+      },
+      3: {
+        value: '-1',
+        etc: 'only 소주',
+      },
+    },
+  }
 
   beforeAll(async () => {
     await prisma.user.create({ data: main })
@@ -33,47 +68,114 @@ describe('App', () => {
   })
 
   describe('User API', () => {
-    it('회원가입 (Post:/v1/users)', async () => {
-      return request(app)
-        .post('/v1/users')
-        .send({ id: subID, pwd: subPWD, type: 'email' })
-        .expect(201)
+    describe('회원가입 (Post:/v1/users)', () => {
+      const url = '/v1/users'
+      it('Success - 회원가입 성공', async () => {
+        return request(app).post(url).send(test).expect(201)
+      })
+
+      it('Success - 취향 업데이트 성공', async () => {
+        return request(app)
+          .post(url)
+          .send({ ...test, taste_type: 2 })
+          .expect(201)
+      })
+
+      it('Error - reqest.body 없거나 유효하지 않을 시', async () => {
+        return request(app).post(url).expect(400)
+      })
+
+      it('Error - nick 겹칠 시 (회원가입)', async () => {
+        return request(app)
+          .post(url)
+          .send({ ...test, id: 'test2@test.com', nick: 'test' })
+          .expect(409)
+      })
+
+      it('Error - pwd 유효하지 않을 시 (취향 업데이트)', async () => {
+        return request(app)
+          .post(url)
+          .send({ ...test, pwd: '12345' })
+          .expect(401)
+      })
     })
   })
 
   describe('Auth API', () => {
-    it('로그인 (Post:/v1/auth/sign)', async () => {
-      const response = await request(app)
-        .post('/v1/auth/sign')
-        .send({ id: main.us_id, pwd: mainPWD })
-        .expect(201)
+    describe('로그인 (Post:/v1/auth/sign)', () => {
+      const url = '/v1/auth/sign'
+      it('Success - 로그인 성공', async () => {
+        const response = await request(app)
+          .post(url)
+          .send({ id: mainID, pwd: mainPWD, type: 'EMAIL' })
+          .expect(201)
 
-      accessToken = response.body.data.accessToken
-      refreshToken = response.body.data.refreshToken
+        accessToken = response.body.data.accessToken
+        refreshToken = response.body.data.refreshToken
 
-      expect(accessToken).toBeDefined()
-      expect(refreshToken).toBeDefined()
+        expect(accessToken).toBeDefined()
+        expect(refreshToken).toBeDefined()
+      })
+
+      it('Error - reqest.body 없거나 유효하지 않을 시', async () => {
+        return request(app).post(url).expect(400)
+      })
+
+      it('Error - user 없을 시', async () => {
+        return request(app)
+          .post(url)
+          .send({ id: 'test999@test.com', pwd: '1234', type: 'EMAIL' })
+          .expect(404)
+      })
+
+      it('Error - pwd 유효하지 않을 시', async () => {
+        return request(app)
+          .post(url)
+          .send({ id: mainID, pwd: '12345', type: 'EMAIL' })
+          .expect(401)
+      })
     })
 
-    it('로그인 체크 (Get:/v1/auth/sign)', () => {
-      return request(app)
-        .get('/v1/auth/sign')
-        .set('Authorization', `Bearer ${accessToken}`)
-        .expect(200)
+    describe('로그인 체크 (Get:/v1/auth/sign)', () => {
+      const url = '/v1/auth/sign'
+      it('Success - 로그인 체크 성공', async () => {
+        return request(app)
+          .get(url)
+          .set('Authorization', `Bearer ${accessToken}`)
+          .expect(200)
+      })
+
+      it('Error - 토큰 없거나 유효하지 않을 시', async () => {
+        return request(app).get(url).expect(401)
+      })
     })
 
-    it('토큰 재발급 (Post:/v1/auth/sign/new)', () => {
-      return request(app)
-        .post('/v1/auth/sign/new')
-        .set('Authorization', `Bearer ${refreshToken}`)
-        .expect(201)
+    describe('토큰 재발급 (Post:/v1/auth/sign/new)', () => {
+      const url = '/v1/auth/sign/new'
+      it('Success - 토큰 재발급 성공', async () => {
+        return request(app)
+          .post(url)
+          .set('Authorization', `Bearer ${refreshToken}`)
+          .expect(201)
+      })
+
+      it('Error - 토큰 없거나 유효하지 않을 시', async () => {
+        return request(app).post(url).expect(401)
+      })
     })
 
-    it('로그아웃 (Delete:/v1/auth/sign)', () => {
-      return request(app)
-        .delete('/v1/auth/sign')
-        .set('Authorization', `Bearer ${accessToken}`)
-        .expect(200)
+    describe('로그아웃 체크 (Delete:/v1/auth/sign)', () => {
+      const url = '/v1/auth/sign'
+      it('Success - 로그아웃 성공', async () => {
+        return request(app)
+          .delete(url)
+          .set('Authorization', `Bearer ${accessToken}`)
+          .expect(200)
+      })
+
+      it('Error - 토큰 없거나 유효하지 않을 시', async () => {
+        return request(app).delete(url).expect(401)
+      })
     })
   })
 })

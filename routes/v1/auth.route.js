@@ -1,22 +1,28 @@
 import { Router } from 'express'
+import { body } from 'express-validator'
+
 import {
   signIn,
   signOut,
   signCheck,
   tokenRefresh,
 } from '../../controllers/auth.controller.js'
-import { authLocal, authJWT, authJWTRefresh } from '../../utils/passport.js'
 
-import { validationFunc } from '../../utils/common.js'
-import { body } from 'express-validator'
+import { authLocal, authJWT, authJWTRefresh } from '../../utils/passport.js'
+import { validationFunc } from '../../utils/validation.js'
+import { registType, snsRegistType } from '../../utils/constant.js'
 
 const router = Router()
 
 router.post(
   '/sign',
   [
-    body('id').isEmail().withMessage('ID_REQUIRED'),
-    body('pwd').isString().withMessage('PWD_REQUIRED'),
+    body('id').isEmail(),
+    body('type').toUpperCase().isIn(registType),
+
+    body('pwd').if(body('type').equals('EMAIL')).isString(),
+    body('sns_id').if(body('type').isIn(snsRegistType)).isString(),
+
     validationFunc,
   ],
   authLocal,

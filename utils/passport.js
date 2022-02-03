@@ -7,7 +7,7 @@ const ExtractJWT = passportJWT.ExtractJwt
 
 import { compare } from 'bcrypt'
 
-import { findUserById } from '../services/users.service.js'
+import { findUserById, findUserBySnsId } from '../services/users.service.js'
 
 export const setPassport = () => {
   passport.use(
@@ -79,9 +79,18 @@ export const setPassport = () => {
       {
         usernameField: 'id',
         passwordField: 'pwd',
+        passReqToCallback: true,
       },
-      async function (id, pwd, cb) {
-        const user = await findUserById(id)
+      async function (req, id, pwd, cb) {
+        const { sns_id, type } = req.body
+
+        let user
+
+        if (type === 'EMAIL') {
+          user = await findUserById(id, type)
+        } else {
+          user = await findUserBySnsId(sns_id)
+        }
 
         if (!user) {
           return cb(null, false, {
@@ -91,22 +100,12 @@ export const setPassport = () => {
           })
         }
 
-        if (user.us_type.toUpperCase() === 'EMAIL') {
-          if (!(await compare(pwd, user.us_pwd))) {
-            return cb(null, false, {
-              statusCode: 401,
-              error: 'SignUnauthorized',
-              message: '로그인 실패',
-            })
-          }
-        } else {
-          if (!(await compare(pwd, user.us_sns_id))) {
-            return cb(null, false, {
-              statusCode: 401,
-              error: 'SignUnauthorized',
-              message: '로그인 실패',
-            })
-          }
+        if (type === 'EMAIL' && !(await compare(pwd, user.us_pwd))) {
+          return cb(null, false, {
+            statusCode: 401,
+            error: 'SignUnauthorized',
+            message: '로그인 실패',
+          })
         }
 
         const { us_pwd, ...userData } = user
