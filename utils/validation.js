@@ -10,7 +10,7 @@ export const validationFunc = (req, res, next) => {
     })
     return res
       .status(400)
-      .json({ statusCode: 400, errors: errors, message: 'Request Error' })
+      .json({ statusCode: 400, errors: errors, message: '잘못된 요청' })
   }
   next()
 }

@@ -48,9 +48,7 @@ const tokenRefresh = (req, res, next) => {
 }
 
 const signCheck = (req, res, next) => {
-  return res
-    .status(200)
-    .json({ statusCode: 200, message: '로그인 상태입니다.' })
+  return res.status(200).json({ statusCode: 200, message: '로그인 상태' })
 }
 
 export { signIn, signOut, tokenRefresh, signCheck }

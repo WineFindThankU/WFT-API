@@ -26,7 +26,7 @@ export const signUp = async (req, res, next) => {
       return res.status(409).json({
         statusCode: 409,
         error: 'CONFLICT_NICK',
-        message: '사용하고 있는 닉네임 입니다.',
+        message: '닉네임 중복',
       })
     }
 
@@ -53,8 +53,8 @@ export const signUp = async (req, res, next) => {
       console.log(e)
       return res.status(400).json({
         statusCode: 400,
-        error: 'REQEST_ERROR',
-        message: 'Request Error',
+        error: 'REQUEST_ERROR',
+        message: '잘못된 요청',
       })
     }
 
@@ -77,8 +77,8 @@ export const signUp = async (req, res, next) => {
       console.log(e)
       return res.status(400).json({
         statusCode: 400,
-        error: 'REQEST_ERROR',
-        message: 'Request Error',
+        error: 'REQUEST_ERROR',
+        message: '잘못된 요청',
       })
     }
 

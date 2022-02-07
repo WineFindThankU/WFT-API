@@ -24,7 +24,7 @@ export const setPassport = () => {
           return cb(null, false, {
             statusCode: 404,
             error: 'NOT_FOUND',
-            message: '유저를 찾지 못했습니다.',
+            message: '유저를 찾지 못했습니다',
           })
         }
 
@@ -50,7 +50,7 @@ export const setPassport = () => {
           return cb(null, false, {
             statusCode: 404,
             error: 'NOT_FOUND',
-            message: '유저를 찾지 못했습니다.',
+            message: '유저를 찾지 못했습니다',
           })
         }
 
@@ -62,7 +62,7 @@ export const setPassport = () => {
           return cb(null, false, {
             statusCode: 401,
             error: 'RefreshTokenExpired',
-            message: '만료된 토근입니다.',
+            message: '만료된 토근',
           })
         }
 
@@ -96,7 +96,7 @@ export const setPassport = () => {
           return cb(null, false, {
             statusCode: 404,
             error: 'NOT_FOUND',
-            message: '유저를 찾지 못했습니다.',
+            message: '유저를 찾지 못했습니다',
           })
         }
 
@@ -155,7 +155,7 @@ export const authJWT = (req, res, next) => {
     return res.status(401).json({
       statusCode: 401,
       error: 'AccessTokenExpired',
-      message: '만료된 토근입니다.',
+      message: '만료된 토근',
     })
   }
 }
@@ -179,7 +179,7 @@ export const authJWTRefresh = (req, res, next) => {
     return res.status(401).json({
       statusCode: 401,
       error: 'RefreshTokenExpired',
-      message: '만료된 토근입니다.',
+      message: '만료된 토근',
     })
   }
 }
