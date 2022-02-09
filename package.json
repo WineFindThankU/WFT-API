@@ -7,16 +7,30 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "db:push": "npx prisma db push",
+    "db:pull": "npx prisma db pull",
+    "generate": "npx prisma generate",
+    "test": "dotenv -e .env.test -- node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "tdb:push": "dotenv -e .env.test -- npx prisma db push",
+    "tdb:pull": "dotenv -e .env.test -- npx prisma db pull"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^3.9.1",
+    "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "express-validator": "^6.14.0",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "passport": "^0.5.2",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "jest": "^27.4.7",
+    "prisma": "^3.9.1",
     "supertest": "^6.2.1"
   },
   "jest": {

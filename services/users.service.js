@@ -1,0 +1,95 @@
+import pkg from '@prisma/client'
+const { PrismaClient } = pkg
+const prisma = new PrismaClient()
+import { hash } from 'bcrypt'
+
+export const createEmailUser = async (id, pwd, data) => {
+  await prisma.user.create({
+    data: {
+      us_id: id,
+      us_pwd: await hash(pwd, 10),
+      ...data,
+    },
+  })
+}
+
+export const createSnsUser = async (id, sns_id, us_type, data) => {
+  await prisma.user.create({
+    data: {
+      us_id: id,
+      us_sns_id: sns_id,
+      us_type: us_type,
+      ...data,
+    },
+  })
+}
+
+export const findUserBySnsId = async (sns_id) => {
+  return await prisma.user.findUnique({
+    where: {
+      us_sns_id: sns_id,
+    },
+  })
+}
+
+export const findUserById = async (id, type) => {
+  return await prisma.user.findFirst({
+    where: {
+      us_id: id,
+      us_type: type,
+    },
+  })
+}
+
+export const findUserByNo = async (no) => {
+  return await prisma.user.findUnique({
+    where: {
+      us_no: no,
+    },
+  })
+}
+
+export const checkNick = async (nick) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      us_nick: nick,
+    },
+  })
+
+  return user ? true : false
+}
+
+export const updateRefreshToken = async (no, refreshToken) => {
+  const hashRefreshToken = await hash(refreshToken, 10)
+  await prisma.user.update({
+    where: {
+      us_no: no,
+    },
+    data: {
+      us_token: hashRefreshToken,
+    },
+  })
+}
+
+export const updateTaste = async (no, type, data) => {
+  await prisma.user.update({
+    where: {
+      us_no: no,
+    },
+    data: {
+      taste_type: type,
+      taste_data: data,
+    },
+  })
+}
+
+export const deleteRefreshToken = async (no) => {
+  await prisma.user.update({
+    where: {
+      us_no: no,
+    },
+    data: {
+      us_token: null,
+    },
+  })
+}

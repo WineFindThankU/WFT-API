@@ -1,7 +1,11 @@
 import { config } from 'dotenv'
 import { join } from 'path'
 import { createServer } from 'http'
+
 import express from 'express'
+
+import { setPassport } from './utils/passport.js'
+
 import router from './routes/index.js'
 
 const App = () => {
@@ -16,7 +20,11 @@ const App = () => {
   const { PORT } = process.env
   const port = PORT || 4000
 
+  setPassport()
+
   const app = express()
+
+  app.use(express.json())
 
   app.use(router)
 

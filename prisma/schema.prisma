@@ -1,0 +1,52 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["extendedIndexes"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  us_no       String    @id @default(cuid())
+  us_id       String    @db.VarChar(100)
+  us_pwd      String?   @db.VarChar(255)
+  us_type     UserType  @default(EMAIL)
+  us_sns_id   String?   @unique @db.VarChar(255)
+  us_nick     String?   @unique @db.VarChar(20)
+  us_birthday DateTime?
+  us_age      Decimal?  @db.Decimal(3, 0)
+  us_gender   Gender?
+  taste_type  Decimal?  @db.Decimal(2, 0)
+  taste_data  Json?
+  us_profile  String?   @db.VarChar(512)
+  us_token    String?   @db.VarChar(255)
+  us_role     UserRole  @default(USER)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  @@index([us_gender])
+  @@index([us_id])
+  @@index([us_type])
+  @@map("tb_user")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum UserType {
+  EMAIL
+  NAVER
+  KAKAO
+  GOOGLE
+  APPLE
+  FACEBOOK
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
