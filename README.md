@@ -2,7 +2,7 @@
 
 ## Setting
 ```bash
-npm install nodemon -g
+
 ```
 
 ## Usage

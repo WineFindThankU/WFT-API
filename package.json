@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js",
+    "dev": "npx nodemon app.js",
     "db:push": "npx prisma db push",
     "db:pull": "npx prisma db pull",
     "generate": "npx prisma generate",
@@ -29,6 +29,7 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
+    "nodemon": "^2.0.15",
     "jest": "^27.4.7",
     "prisma": "^3.9.1",
     "supertest": "^6.2.1"
