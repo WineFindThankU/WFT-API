@@ -78,11 +78,11 @@ export const setPassport = () => {
     new LocalStrategy(
       {
         usernameField: 'id',
-        passwordField: 'pwd',
+        passwordField: 'type',
         passReqToCallback: true,
       },
-      async function (req, id, pwd, cb) {
-        const { sns_id, type } = req.body
+      async function (req, id, type, cb) {
+        const { sns_id, pwd } = req.body
 
         let user
 
