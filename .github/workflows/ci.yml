@@ -1,0 +1,20 @@
+name: ci
+
+on:
+  push:
+    branches: [ develop ]
+ 
+jobs:
+  depoly:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - 
+        name: executing remote ssh commands using key (dev)
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: cd ${{ secrets.PATH_DEV }} && git fetch --all && git reset --hard origin/main && git pull && npm install && pm2 reload dev_api
