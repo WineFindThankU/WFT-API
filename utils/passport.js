@@ -6,6 +6,7 @@ const JWTStrategy = passportJWT.Strategy
 const ExtractJWT = passportJWT.ExtractJwt
 
 import { compare } from 'bcrypt'
+import moment from 'moment'
 
 import { findUserById, findUserBySnsId } from '../services/users.service.js'
 
@@ -26,6 +27,26 @@ export const setPassport = () => {
             error: 'NOT_FOUND',
             message: '유저를 찾지 못했습니다',
           })
+        }
+
+        if (user.us_status === 'DISABLED') {
+          const disabledAt = moment(user.disabled_at).startOf('day')
+          const now = moment().startOf('day')
+          const diff = moment.duration(now.diff(disabledAt)).asDays()
+
+          if (diff < 7) {
+            return cb(null, false, {
+              statusCode: 403,
+              error: 'DISABLED_USER',
+              message: '비활성화된 계정입니다',
+            })
+          } else {
+            return cb(null, false, {
+              statusCode: 404,
+              error: 'NOT_FOUND',
+              message: '유저를 찾지 못했습니다',
+            })
+          }
         }
 
         const { us_pwd, us_token, ...userData } = user
@@ -52,6 +73,26 @@ export const setPassport = () => {
             error: 'NOT_FOUND',
             message: '유저를 찾지 못했습니다',
           })
+        }
+
+        if (user.us_status === 'DISABLED') {
+          const disabledAt = moment(user.disabled_at).startOf('day')
+          const now = moment().startOf('day')
+          const diff = moment.duration(now.diff(disabledAt)).asDays()
+
+          if (diff < 7) {
+            return cb(null, false, {
+              statusCode: 403,
+              error: 'DISABLED_USER',
+              message: '비활성화된 계정입니다',
+            })
+          } else {
+            return cb(null, false, {
+              statusCode: 404,
+              error: 'NOT_FOUND',
+              message: '유저를 찾지 못했습니다',
+            })
+          }
         }
 
         const refreshToken = req.get('authorization').replace('Bearer ', '')
@@ -98,6 +139,26 @@ export const setPassport = () => {
             error: 'NOT_FOUND',
             message: '유저를 찾지 못했습니다',
           })
+        }
+
+        if (user.us_status === 'DISABLED') {
+          const disabledAt = moment(user.disabled_at).startOf('day')
+          const now = moment().startOf('day')
+          const diff = moment.duration(now.diff(disabledAt)).asDays()
+
+          if (diff < 7) {
+            return cb(null, false, {
+              statusCode: 403,
+              error: 'DISABLED_USER',
+              message: '비활성화된 계정입니다',
+            })
+          } else {
+            return cb(null, false, {
+              statusCode: 404,
+              error: 'NOT_FOUND',
+              message: '유저를 찾지 못했습니다',
+            })
+          }
         }
 
         if (type === 'EMAIL' && !(await compare(pwd, user.us_pwd))) {

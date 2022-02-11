@@ -9,25 +9,31 @@ datasource db {
 }
 
 model User {
-  us_no       String    @id @default(cuid())
-  us_id       String    @db.VarChar(100)
-  us_pwd      String?   @db.VarChar(255)
-  us_type     UserType  @default(EMAIL)
-  us_sns_id   String?   @unique @db.VarChar(255)
-  us_nick     String?   @unique @db.VarChar(20)
+  us_no       String     @id @default(cuid())
+  us_id       String     @db.VarChar(100)
+  us_pwd      String?    @db.VarChar(255)
+  us_type     UserType   @default(EMAIL)
+  us_sns_id   String?    @db.VarChar(255)
+  us_nick     String?    @unique @db.VarChar(20)
   us_birthday DateTime?
-  us_age      Decimal?  @db.Decimal(3, 0)
+  us_age      Decimal?   @db.Decimal(3, 0)
   us_gender   Gender?
-  taste_type  Decimal?  @db.Decimal(2, 0)
+  taste_type  Decimal?   @db.Decimal(2, 0)
   taste_data  Json?
-  us_profile  String?   @db.VarChar(512)
-  us_token    String?   @db.VarChar(255)
-  us_role     UserRole  @default(USER)
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
+  us_profile  String?    @db.VarChar(512)
+  us_token    String?    @db.VarChar(255)
+  us_role     UserRole   @default(USER)
+  us_status   UserStatus @default(ENABLED)
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
+  disabled_at DateTime?   
 
+  @@index([taste_type])
   @@index([us_gender])
   @@index([us_id])
+  @@index([us_role])
+  @@index([us_sns_id])
+  @@index([us_status])
   @@index([us_type])
   @@map("tb_user")
 }
@@ -35,6 +41,11 @@ model User {
 enum UserRole {
   USER
   ADMIN
+}
+
+enum UserStatus {
+  ENABLED
+  DISABLED
 }
 
 enum UserType {
