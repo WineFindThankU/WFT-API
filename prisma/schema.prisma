@@ -26,6 +26,7 @@ model User {
   us_status   UserStatus @default(ENABLED)
   created_at  DateTime   @default(now())
   updated_at  DateTime   @updatedAt
+  disabled_at DateTime?   
 
   @@index([taste_type])
   @@index([us_gender])

@@ -1,8 +1,9 @@
 import { Router } from 'express'
 import { body } from 'express-validator'
 
-import { signUp } from '../../controllers/users.controller.js'
+import { signUp, userDisable } from '../../controllers/users.controller.js'
 
+import { authJWT } from '../../utils/passport.js'
 import { validationFunc, isIfExists } from '../../utils/validation.js'
 import { registType, snsRegistType, gender } from '../../utils/constant.js'
 
@@ -28,5 +29,6 @@ router.post(
   ],
   signUp,
 )
+router.delete('/', authJWT, userDisable)
 
 export default router

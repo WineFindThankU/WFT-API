@@ -25,10 +25,18 @@ export const createSnsUser = async (id, sns_id, us_type, data) => {
 }
 
 export const findUserBySnsId = async (sns_id) => {
-  return await prisma.user.findUnique({
+  return await prisma.user.findFirst({
     where: {
       us_sns_id: sns_id,
     },
+    orderBy: [
+      {
+        us_status: 'asc',
+      },
+      {
+        created_at: 'desc',
+      },
+    ],
   })
 }
 
@@ -38,6 +46,14 @@ export const findUserById = async (id, type) => {
       us_id: id,
       us_type: type,
     },
+    orderBy: [
+      {
+        us_status: 'asc',
+      },
+      {
+        created_at: 'desc',
+      },
+    ],
   })
 }
 
@@ -90,6 +106,18 @@ export const deleteRefreshToken = async (no) => {
     },
     data: {
       us_token: null,
+    },
+  })
+}
+
+export const disableUser = async (no) => {
+  await prisma.user.update({
+    where: {
+      us_no: no,
+    },
+    data: {
+      us_status: 'DISABLED',
+      disabled_at: new Date(),
     },
   })
 }
