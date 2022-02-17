@@ -15,6 +15,6 @@ export const validationFunc = (req, res, next) => {
   next()
 }
 
-export const isIfExists = (text) => {
-  return body(text).if(body(text).exists())
+export const isIfExists = (text, type = body) => {
+  return type(text).if(type(text).exists())
 }

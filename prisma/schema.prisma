@@ -14,7 +14,7 @@ model User {
   us_pwd      String?    @db.VarChar(255)
   us_type     UserType   @default(EMAIL)
   us_sns_id   String?    @db.VarChar(255)
-  us_nick     String?    @unique @db.VarChar(20)
+  us_nick     String     @unique @db.VarChar(20)
   us_birthday DateTime?
   us_age      Decimal?   @db.Decimal(3, 0)
   us_gender   Gender?
@@ -26,7 +26,8 @@ model User {
   us_status   UserStatus @default(ENABLED)
   created_at  DateTime   @default(now())
   updated_at  DateTime   @updatedAt
-  disabled_at DateTime?   
+  disabled_at DateTime?
+  qnas        Qna[]
 
   @@index([taste_type])
   @@index([us_gender])
@@ -36,6 +37,28 @@ model User {
   @@index([us_status])
   @@index([us_type])
   @@map("tb_user")
+}
+
+model Qna {
+  qa_no      String    @id @default(cuid())
+  us_no      String
+  qa_email   String    @db.VarChar(100)
+  qa_title   String    @db.VarChar(100)
+  qa_content String
+  qa_reply   String?
+  qa_status  QnaStatus @default(OPEN)
+  created_at DateTime  @default(now())
+  closed_at  DateTime?
+  user       User      @relation(fields: [us_no], references: [us_no])
+
+  @@index([qa_status])
+  @@index([us_no])
+  @@map("tb_qna")
+}
+
+enum QnaStatus {
+  OPEN
+  CLOSED
 }
 
 enum UserRole {
