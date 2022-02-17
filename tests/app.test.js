@@ -8,6 +8,7 @@ const prisma = new PrismaClient()
 describe('App', () => {
   let accessToken
   let refreshToken
+  let qaNo
 
   const mainID = 'test@test.com'
   const mainPWD = '1234'
@@ -29,6 +30,15 @@ describe('App', () => {
         value: '-1',
         etc: 'only 소주',
       },
+    },
+    qnas: {
+      create: [
+        {
+          qa_email: 'test@test.com',
+          qa_title: 'qna test',
+          qa_content: 'qna test content',
+        },
+      ],
     },
   }
 
@@ -59,6 +69,7 @@ describe('App', () => {
   })
 
   afterAll(async () => {
+    await prisma.qna.deleteMany({})
     await prisma.user.deleteMany({})
     app.close()
   })
@@ -67,7 +78,7 @@ describe('App', () => {
     return request(app).get('/').expect(200).expect('WFT API')
   })
 
-  describe('User API', () => {
+  describe('Users API', () => {
     describe('회원가입 (Post:/v1/users)', () => {
       const url = '/v1/users'
       it('Success - 회원가입 성공', async () => {
@@ -83,13 +94,6 @@ describe('App', () => {
 
       it('Error - reqest.body 없거나 유효하지 않을 시', async () => {
         return request(app).post(url).expect(400)
-      })
-
-      it('Error - nick 겹칠 시 (회원가입)', async () => {
-        return request(app)
-          .post(url)
-          .send({ ...test, id: 'test2@test.com', nick: 'test' })
-          .expect(409)
       })
 
       it('Error - pwd 유효하지 않을 시 (취향 업데이트)', async () => {
@@ -175,6 +179,89 @@ describe('App', () => {
 
       it('Error - 토큰 없거나 유효하지 않을 시', async () => {
         return request(app).delete(url).expect(401)
+      })
+    })
+  })
+
+  describe('Qna API', () => {
+    describe('1:1문의 리스트 (Get:/v1/qna)', () => {
+      const url = '/v1/qna'
+      it('Success - 1:1문의 조회 성공', async () => {
+        const response = await request(app)
+          .get(url)
+          .query({ page: 1 })
+          .set('Authorization', `Bearer ${accessToken}`)
+          .expect(200)
+
+        console.log(response.body.data.list[0].qa_no)
+
+        qaNo = response.body.data.list[0].qa_no
+
+        expect(qaNo).toBeDefined()
+      })
+
+      it('Error - query 없을 시', async () => {
+        return request(app).get(url).expect(400)
+      })
+
+      it('Error - 토큰 없거나 유효하지 않을 시', async () => {
+        return request(app).get(url).query({ page: 1 }).expect(401)
+      })
+    })
+
+    describe('1:1문의 상세 (Get:/v1/qna/:qa_no)', () => {
+      it('Success - 1:1문의 조회 성공', async () => {
+        const url = `/v1/qna/${qaNo}`
+
+        return request(app)
+          .get(url)
+          .set('Authorization', `Bearer ${accessToken}`)
+          .expect(200)
+      })
+
+      it('Error - qa_no 유효하지 않을 시', async () => {
+        const url = '/v1/qna/1234'
+
+        return request(app)
+          .get(url)
+          .set('Authorization', `Bearer ${accessToken}`)
+          .expect(404)
+      })
+
+      it('Error - 토큰 없거나 유효하지 않을 시', async () => {
+        const url = `/v1/qna/${qaNo}`
+
+        return request(app).get(url).expect(401)
+      })
+    })
+
+    describe('1:1문의 작성 (Post:/v1/qna)', () => {
+      const url = '/v1/qna'
+      it('Success - 1:1문의 작성 성공', async () => {
+        return request(app)
+          .post(url)
+          .set('Authorization', `Bearer ${accessToken}`)
+          .send({
+            email: 'test@test.com',
+            title: 'qna test',
+            content: 'qna test content',
+          })
+          .expect(201)
+      })
+
+      it('Error - body 없을 시', async () => {
+        return request(app).post(url).expect(400)
+      })
+
+      it('Error - 토큰 없거나 유효하지 않을 시', async () => {
+        return request(app)
+          .post(url)
+          .send({
+            email: 'test@test.com',
+            title: 'qna test',
+            content: 'qna test content',
+          })
+          .expect(401)
       })
     })
   })
