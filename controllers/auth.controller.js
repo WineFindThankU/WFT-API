@@ -2,7 +2,7 @@ import { getAccessToken, getRefreshToken } from '../services/auth.service.js'
 import {
   updateRefreshToken,
   deleteRefreshToken,
-} from '../services/users.service.js'
+} from '../services/user.service.js'
 
 export const signIn = async (req, res, next) => {
   const user = req.user

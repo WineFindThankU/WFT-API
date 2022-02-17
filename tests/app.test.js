@@ -78,9 +78,9 @@ describe('App', () => {
     return request(app).get('/').expect(200).expect('WFT API')
   })
 
-  describe('Users API', () => {
-    describe('회원가입 (Post:/v1/users)', () => {
-      const url = '/v1/users'
+  describe('User API', () => {
+    describe('회원가입 (Post:/v1/user)', () => {
+      const url = '/v1/user'
       it('Success - 회원가입 성공', async () => {
         return request(app).post(url).send(test).expect(201)
       })

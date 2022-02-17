@@ -8,7 +8,7 @@ const ExtractJWT = passportJWT.ExtractJwt
 import { compare } from 'bcrypt'
 import moment from 'moment'
 
-import { findUserById, findUserBySnsId } from '../services/users.service.js'
+import { findUserById, findUserBySnsId } from '../services/user.service.js'
 
 export const setPassport = () => {
   passport.use(

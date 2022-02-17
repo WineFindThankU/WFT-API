@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { body } from 'express-validator'
 
-import { signUp, userDisable } from '../../controllers/users.controller.js'
+import { signUp, userDisable } from '../../controllers/user.controller.js'
 
 import { authJWT } from '../../utils/passport.js'
 import { validationFunc, isIfExists } from '../../utils/validation.js'
