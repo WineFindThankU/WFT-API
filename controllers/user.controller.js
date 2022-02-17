@@ -10,7 +10,7 @@ import {
   checkNick,
   updateTaste,
   disableUser,
-} from '../services/users.service.js'
+} from '../services/user.service.js'
 
 export const signUp = async (req, res, next) => {
   const { id, pwd, sns_id, type, ...data } = req.body
