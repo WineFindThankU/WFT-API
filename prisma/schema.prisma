@@ -56,6 +56,25 @@ model Qna {
   @@map("tb_qna")
 }
 
+model Shop {
+  sh_no         String    @id @default(cuid())
+  sh_name       String    @db.VarChar(100)
+  sh_category   String?
+  sh_address    String?   @db.VarChar(100)
+  sh_tell       String?   @db.VarChar(100)
+  sh_url        String?   @db.VarChar(255)
+
+  sh_longitude  Float?
+  sh_latitude   Float?
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+
+  @@index([sh_name])
+  @@index([sh_longitude])
+  @@index([sh_latitude])
+  @@map("tb_shop")
+}
+
 enum QnaStatus {
   OPEN
   CLOSED
