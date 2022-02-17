@@ -17,4 +17,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
-          script: cd ${{ secrets.PATH_DEV }} && git fetch --all && git reset --hard origin/develop && git pull && npm install && pm2 reload dev_api
+          script: cd ${{ secrets.PATH_DEV }} && git fetch --all && git reset --hard origin/develop && git pull && npm install && npm run generate && pm2 reload dev_api
