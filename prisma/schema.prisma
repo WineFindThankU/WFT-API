@@ -76,18 +76,14 @@ model Shop {
 }
 
 model Dong {
-  do_no      String   @id @default(cuid())
-  do_full    String   @db.VarChar(100)
-  do_si      String   @db.VarChar(100)
-  do_gu      String   @db.VarChar(100)
-  do_dong    String   @db.VarChar(100)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  do_no       String   @id @default(cuid())
+  do_full     String   @db.VarChar(100)
+  do_si       String   @db.VarChar(100)
+  do_gu       String   @db.VarChar(100)
+  do_dong     String   @db.VarChar(100)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 
-  @@index([do_dong])
-  @@index([do_full])
-  @@index([do_gu])
-  @@index([do_si])
   @@map("tb_dong")
 }
 
