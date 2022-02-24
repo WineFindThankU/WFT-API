@@ -35,14 +35,14 @@ export const countQnaByNo = async (us_no, options = {}) => {
 }
 
 export const createQna = async (us_no, email, title, content) => {
-  await prisma.user.update({
-    where: { us_no: us_no },
+  await prisma.qna.create({
     data: {
-      qnas: {
-        create: {
-          qa_email: email,
-          qa_title: title,
-          qa_content: content,
+      qa_email: email,
+      qa_title: title,
+      qa_content: content,
+      user: {
+        connect: {
+          us_no: us_no,
         },
       },
     },
