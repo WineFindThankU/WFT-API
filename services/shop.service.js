@@ -74,3 +74,56 @@ export const findOneShop = async (sh_no) => {
     },
   })
 }
+
+export const findOneUserShop = async (us_no, sh_no) => {
+  return await prisma.userShop.findUnique({
+    where: {
+      us_no_sh_no: {
+        us_no: us_no,
+        sh_no: sh_no,
+      },
+    },
+  })
+}
+
+export const createUserShop = async (us_no, sh_no, datas = {}) => {
+  return await prisma.userShop.create({
+    data: {
+      user: {
+        connect: {
+          us_no: us_no,
+        },
+      },
+      shop: {
+        connect: {
+          sh_no: sh_no,
+        },
+      },
+      ...datas,
+    },
+  })
+}
+
+export const updateUserShop = async (us_no, sh_no, datas = {}) => {
+  return await prisma.userShop.update({
+    where: {
+      us_no_sh_no: {
+        us_no: us_no,
+        sh_no: sh_no,
+      },
+    },
+    data: {
+      ...datas,
+    },
+  })
+}
+
+export const updateShopBookmark = async (us_no, sh_no, bookmark) => {
+  const userShop = await findOneUserShop(us_no, sh_no)
+
+  if (userShop) {
+    await updateUserShop(us_no, sh_no, { uh_bookmark: bookmark })
+  } else {
+    await createUserShop(us_no, sh_no, { uh_bookmark: bookmark })
+  }
+}

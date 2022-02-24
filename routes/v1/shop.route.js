@@ -1,7 +1,11 @@
 import { Router } from 'express'
-import { query, param } from 'express-validator'
+import { query, param, body } from 'express-validator'
 
-import { shopList, shopDetail } from '../../controllers/shop.controller.js'
+import {
+  shopList,
+  shopDetail,
+  shopBookmark,
+} from '../../controllers/shop.controller.js'
 
 import { authJWT } from '../../utils/passport.js'
 import { validationFunc, isIfExists } from '../../utils/validation.js'
@@ -32,6 +36,13 @@ router.get(
   [param('sh_no').isString(), validationFunc],
   authJWT,
   shopDetail,
+)
+
+router.post(
+  '/:sh_no/bookmark',
+  [param('sh_no').isString(), body('bookmark').isBoolean(), validationFunc],
+  authJWT,
+  shopBookmark,
 )
 
 export default router
