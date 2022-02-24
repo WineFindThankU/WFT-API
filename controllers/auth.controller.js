@@ -4,7 +4,7 @@ import {
   deleteRefreshToken,
 } from '../services/user.service.js'
 
-export const signIn = async (req, res, next) => {
+export const signIn = async (req, res) => {
   const user = req.user
 
   const accessToken = getAccessToken(user)
@@ -22,7 +22,7 @@ export const signIn = async (req, res, next) => {
   })
 }
 
-export const signOut = async (req, res, next) => {
+export const signOut = async (req, res) => {
   const user = req.user
 
   await deleteRefreshToken(user.us_no)
@@ -33,7 +33,7 @@ export const signOut = async (req, res, next) => {
   })
 }
 
-export const tokenRefresh = (req, res, next) => {
+export const tokenRefresh = (req, res) => {
   const user = req.user
 
   const accessToken = getAccessToken(user)
@@ -47,6 +47,6 @@ export const tokenRefresh = (req, res, next) => {
   })
 }
 
-export const signCheck = (req, res, next) => {
+export const signCheck = (_req, res) => {
   return res.status(200).json({ statusCode: 200, message: '로그인 상태' })
 }

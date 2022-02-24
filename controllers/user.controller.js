@@ -12,7 +12,7 @@ import {
   disableUser,
 } from '../services/user.service.js'
 
-export const signUp = async (req, res, next) => {
+export const signUp = async (req, res) => {
   const { id, pwd, sns_id, type, ...data } = req.body
 
   let user
@@ -101,7 +101,7 @@ export const signUp = async (req, res, next) => {
   }
 }
 
-export const userDisable = async (req, res, next) => {
+export const userDisable = async (req, res) => {
   const user = req.user
 
   await disableUser(user.us_no)
