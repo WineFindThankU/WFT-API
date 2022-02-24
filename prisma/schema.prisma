@@ -29,6 +29,7 @@ model User {
   disabled_at DateTime?
   qnas        Qna[]
   userShops   UserShop[]
+  userWines   UserWine[]
 
   @@index([taste_type])
   @@index([us_gender])
@@ -52,6 +53,7 @@ model Shop {
   updated_at   DateTime     @updatedAt
   sh_dong      String?
   sh_category  ShopCategory @default(ETC)
+  dong         Dong?        @relation(fields: [sh_dong], references: [do_no])
   userShops    UserShop[]
 
   @@index([sh_latitude])
@@ -72,6 +74,39 @@ model UserShop {
 
   @@id([us_no, sh_no])
   @@map("tb_user_shop")
+}
+
+model Wine {
+  wn_no       String     @id @default(cuid())
+  wn_name     String     @db.VarChar(100)
+  wn_name_uni String?
+  wn_name_en  String?    @db.VarChar(100)
+  wn_origin   String
+  wn_vintage  DateTime
+  wn_img      String
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
+  userWins    UserWine[]
+
+  @@index([wn_name])
+  @@map("tb_wine")
+}
+
+model UserWine {
+  uw_no        String   @id @default(cuid())
+  us_no        String
+  wn_no        String?
+  uw_origin    String
+  uw_vintage   DateTime
+  purchased_at DateTime
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  user         User     @relation(fields: [us_no], references: [us_no])
+  wine         Wine?    @relation(fields: [wn_no], references: [wn_no])
+
+  @@index([us_no])
+  @@index([wn_no])
+  @@map("tb_user_wine")
 }
 
 model Qna {
@@ -99,6 +134,7 @@ model Dong {
   do_dong    String   @db.VarChar(100)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  shop       Shop[]
 
   @@map("tb_dong")
 }

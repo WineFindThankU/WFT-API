@@ -5,6 +5,7 @@ import {
   shopList,
   shopDetail,
   shopBookmark,
+  shopWineWrite,
 } from '../../controllers/shop.controller.js'
 
 import { authJWT } from '../../utils/passport.js'
@@ -43,6 +44,13 @@ router.post(
   [param('sh_no').isString(), body('bookmark').isBoolean(), validationFunc],
   authJWT,
   shopBookmark,
+)
+
+router.post(
+  '/:sh_no/wine',
+  [param('sh_no').isString(), validationFunc],
+  authJWT,
+  shopWineWrite,
 )
 
 export default router
