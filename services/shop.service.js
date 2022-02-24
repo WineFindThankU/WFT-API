@@ -67,10 +67,6 @@ export const findOneShop = async (sh_no) => {
       sh_address: true,
       sh_tell: true,
       sh_url: true,
-      sh_longitude: false,
-      sh_latitude: false,
-      created_at: false,
-      updated_at: false,
     },
   })
 }

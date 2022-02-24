@@ -2,6 +2,7 @@ import {
   findShopByLocation,
   findShopByKeyword,
   findOneShop,
+  findOneUserShop,
   updateShopBookmark,
 } from '../services/shop.service.js'
 
@@ -43,7 +44,7 @@ export const shopDetail = async (req, res) => {
   const { user, params } = req
   const { sh_no } = params
 
-  const shop = await findOneShop(sh_no)
+  let shop = await findOneShop(sh_no)
 
   if (!shop) {
     return res.status(404).json({
@@ -52,6 +53,9 @@ export const shopDetail = async (req, res) => {
       message: '와인샵 조회 실패',
     })
   }
+
+  const userShop = await findOneUserShop(user.us_no, sh_no)
+  shop = { ...shop, sh_bookmark: userShop ? userShop.uh_bookmark : false }
 
   return res
     .status(200)
