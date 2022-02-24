@@ -28,6 +28,7 @@ model User {
   updated_at  DateTime   @updatedAt
   disabled_at DateTime?
   qnas        Qna[]
+  userShops   UserShop[]
 
   @@index([taste_type])
   @@index([us_gender])
@@ -37,6 +38,40 @@ model User {
   @@index([us_status])
   @@index([us_type])
   @@map("tb_user")
+}
+
+model Shop {
+  sh_no        String       @id @default(cuid())
+  sh_name      String       @db.VarChar(100)
+  sh_address   String?      @db.VarChar(100)
+  sh_tell      String?      @db.VarChar(100)
+  sh_url       String?      @db.VarChar(255)
+  sh_longitude Float?
+  sh_latitude  Float?
+  created_at   DateTime     @default(now())
+  updated_at   DateTime     @updatedAt
+  sh_dong      String?
+  sh_category  ShopCategory @default(ETC)
+  userShops    UserShop[]
+
+  @@index([sh_latitude])
+  @@index([sh_longitude])
+  @@index([sh_name])
+  @@map("tb_shop")
+}
+
+model UserShop {
+  us_no       String
+  sh_no       String
+  uh_bookmark Boolean  @default(false)
+  uh_wine_cnt Int      @default(0)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  shop        Shop     @relation(fields: [sh_no], references: [sh_no])
+  user        User     @relation(fields: [us_no], references: [us_no])
+
+  @@id([us_no, sh_no])
+  @@map("tb_user_shop")
 }
 
 model Qna {
@@ -54,25 +89,6 @@ model Qna {
   @@index([qa_status])
   @@index([us_no])
   @@map("tb_qna")
-}
-
-model Shop {
-  sh_no        String       @id @default(cuid())
-  sh_name      String       @db.VarChar(100)
-  sh_address   String?      @db.VarChar(100)
-  sh_tell      String?      @db.VarChar(100)
-  sh_url       String?      @db.VarChar(255)
-  sh_longitude Float?
-  sh_latitude  Float?
-  created_at   DateTime     @default(now())
-  updated_at   DateTime     @updatedAt
-  sh_dong      String?
-  sh_category  ShopCategory @default(ETC)
-
-  @@index([sh_latitude])
-  @@index([sh_longitude])
-  @@index([sh_name])
-  @@map("tb_shop")
 }
 
 model Dong {

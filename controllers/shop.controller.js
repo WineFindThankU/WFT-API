@@ -2,6 +2,7 @@ import {
   findShopByLocation,
   findShopByKeyword,
   findOneShop,
+  updateShopBookmark,
 } from '../services/shop.service.js'
 
 export const shopList = async (req, res) => {
@@ -57,8 +58,14 @@ export const shopDetail = async (req, res) => {
     .json({ statusCode: 200, message: '와인샵 조회 성공', data: shop })
 }
 
-export const shopSearch = async (req, res) => {
+export const shopBookmark = async (req, res) => {
+  const { user, params, body } = req
+  const { bookmark } = body
+  const { sh_no } = params
+
+  await updateShopBookmark(user.us_no, sh_no, bookmark)
+
   return res
-    .status(200)
-    .json({ statusCode: 200, message: '와인샵 검색 성공', data: shop })
+    .status(201)
+    .json({ statusCode: 201, message: '와인샵 즐겨찾기 성공' })
 }
