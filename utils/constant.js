@@ -6,4 +6,12 @@ export const gender = ['MALE', 'FEMALE']
 
 export const searchType = ['LOCATION', 'KEYWORD']
 
-export const shopCategory = ['']
+export const shopCategory = [
+  'PRIVATE',
+  'CHAIN',
+  'CONVENIENCE',
+  'SUPERMARKET',
+  'WAREHOUSE',
+  'DEPARTMENT',
+  'ETC',
+]

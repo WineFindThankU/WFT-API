@@ -5,7 +5,7 @@ import { shopList, shopDetail } from '../../controllers/shop.controller.js'
 
 import { authJWT } from '../../utils/passport.js'
 import { validationFunc, isIfExists } from '../../utils/validation.js'
-import { searchType } from '../../utils/constant.js'
+import { searchType, shopCategory } from '../../utils/constant.js'
 
 const router = Router()
 
@@ -19,8 +19,7 @@ router.get(
     isIfExists('radius', query).isNumeric(),
 
     query('keyword').if(query('type').equals('KEYWORD')).isString(),
-
-    // isIfExists('category', query).toUpperCase().isIn(searchType),
+    isIfExists('category', query).toUpperCase().isIn(shopCategory),
 
     validationFunc,
   ],

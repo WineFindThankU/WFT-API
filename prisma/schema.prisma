@@ -57,17 +57,17 @@ model Qna {
 }
 
 model Shop {
-  sh_no        String   @id @default(cuid())
-  sh_name      String   @db.VarChar(100)
-  sh_category  String?
-  sh_address   String?  @db.VarChar(100)
-  sh_tell      String?  @db.VarChar(100)
-  sh_url       String?  @db.VarChar(255)
+  sh_no        String       @id @default(cuid())
+  sh_name      String       @db.VarChar(100)
+  sh_address   String?      @db.VarChar(100)
+  sh_tell      String?      @db.VarChar(100)
+  sh_url       String?      @db.VarChar(255)
   sh_longitude Float?
   sh_latitude  Float?
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
+  created_at   DateTime     @default(now())
+  updated_at   DateTime     @updatedAt
   sh_dong      String?
+  sh_category  ShopCategory @default(ETC)
 
   @@index([sh_latitude])
   @@index([sh_longitude])
@@ -76,13 +76,13 @@ model Shop {
 }
 
 model Dong {
-  do_no       String   @id @default(cuid())
-  do_full     String   @db.VarChar(100)
-  do_si       String   @db.VarChar(100)
-  do_gu       String   @db.VarChar(100)
-  do_dong     String   @db.VarChar(100)
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  do_no      String   @id @default(cuid())
+  do_full    String   @db.VarChar(100)
+  do_si      String   @db.VarChar(100)
+  do_gu      String   @db.VarChar(100)
+  do_dong    String   @db.VarChar(100)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   @@map("tb_dong")
 }
@@ -93,6 +93,16 @@ model spatial_ref_sys {
   auth_srid Int?
   srtext    String? @db.VarChar(2048)
   proj4text String? @db.VarChar(2048)
+}
+
+enum ShopCategory {
+  PRIVATE
+  CHAIN
+  CONVENIENCE
+  SUPERMARKET
+  WAREHOUSE
+  DEPARTMENT
+  ETC
 }
 
 enum QnaStatus {
