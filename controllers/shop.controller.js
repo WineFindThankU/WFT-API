@@ -73,3 +73,5 @@ export const shopBookmark = async (req, res) => {
     .status(201)
     .json({ statusCode: 201, message: '와인샵 즐겨찾기 성공' })
 }
+
+export const shopWineWrite = async (req, res) => {}
