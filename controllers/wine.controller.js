@@ -2,15 +2,26 @@ import {
   createUserWine,
   deleteUserWine,
   findOneUserWine,
+  findWineByKeyword,
 } from '../services/wine.service.js'
 import moment from 'moment'
 
 export const wineList = async (req, res) => {
   const { keyword } = req.query
 
+  const wine = await findWineByKeyword(keyword)
+
+  if (!wine) {
+    return res.status(404).json({
+      statusCode: 404,
+      error: 'NOT_FOUND',
+      message: '와인 조회 실패',
+    })
+  }
+
   return res
     .status(200)
-    .json({ statusCode: 200, message: '와인 조회 성공', data: [] })
+    .json({ statusCode: 200, message: '와인 조회 성공', data: wine })
 }
 
 export const wineAdd = async (req, res) => {

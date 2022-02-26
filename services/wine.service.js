@@ -60,3 +60,18 @@ export const deleteUserWine = async (uw_no) => {
     },
   })
 }
+
+export const findWineByKeyword = async (keyword) => {
+  const _keyword = '%' + toUniCode(keyword) + '%'
+
+  const query =
+    await prisma.$queryRaw`SELECT wn.wn_no FROM tb_wine AS wn WHERE wn.wn_name_uni LIKE ${_keyword}`
+
+  return await prisma.wine.findMany({
+    where: {
+      wn_no: {
+        in: query.map(({ wn_no }) => wn_no),
+      },
+    },
+  })
+}
