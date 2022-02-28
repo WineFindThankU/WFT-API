@@ -16,7 +16,7 @@ const router = Router()
 router.get(
   '/',
   [
-    query('type').toUpperCase().isIn(searchType),
+    isIfExists('type', query).toUpperCase().isIn(searchType),
 
     query('longitude').if(query('type').equals('LOCATION')).isFloat(),
     query('latitude').if(query('type').equals('LOCATION')).isFloat(),

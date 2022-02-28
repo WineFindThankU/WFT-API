@@ -1,6 +1,7 @@
 import {
   findShopByLocation,
   findShopByKeyword,
+  findShop,
   findOneShop,
   findOneUserShop,
   updateShopBookmark,
@@ -21,8 +22,22 @@ export const shopList = async (req, res) => {
     return res
       .status(200)
       .json({ statusCode: 200, message: '와인샵 조회 성공', data: shop })
-  } else {
+  } else if (type === 'KEYWORD') {
     const shop = await findShopByKeyword(keyword)
+
+    if (!shop) {
+      return res.status(404).json({
+        statusCode: 404,
+        error: 'NOT_FOUND',
+        message: '와인샵 조회 실패',
+      })
+    }
+
+    return res
+      .status(200)
+      .json({ statusCode: 200, message: '와인샵 조회 성공', data: shop })
+  } else {
+    const shop = await findShop()
 
     if (!shop) {
       return res

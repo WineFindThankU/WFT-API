@@ -34,6 +34,19 @@ export const findShopByLocation = async (
   })
 }
 
+export const findShop = async () => {
+  return await prisma.shop.findMany({
+    select: {
+      sh_no: true,
+      sh_name: true,
+      sh_category: true,
+      sh_address: true,
+      sh_tell: true,
+      sh_url: true,
+    },
+  })
+}
+
 export const findShopByKeyword = async (keyword) => {
   const _keyword = '%' + keyword + '%'
 
