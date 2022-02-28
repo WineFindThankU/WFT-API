@@ -12,11 +12,9 @@ export const wineList = async (req, res) => {
   const wine = await findWineByKeyword(keyword)
 
   if (!wine) {
-    return res.status(404).json({
-      statusCode: 404,
-      error: 'NOT_FOUND',
-      message: '와인 조회 실패',
-    })
+    return res
+      .status(200)
+      .json({ statusCode: 200, message: '와인 조회 실패', data: [] })
   }
 
   return res

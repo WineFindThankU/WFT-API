@@ -13,11 +13,9 @@ export const shopList = async (req, res) => {
     const shop = await findShopByLocation(longitude, latitude, category, radius)
 
     if (!shop) {
-      return res.status(404).json({
-        statusCode: 404,
-        error: 'NOT_FOUND',
-        message: '와인샵 조회 실패',
-      })
+      return res
+        .status(200)
+        .json({ statusCode: 200, message: '와인샵 조회 실패', data: [] })
     }
 
     return res
@@ -27,11 +25,9 @@ export const shopList = async (req, res) => {
     const shop = await findShopByKeyword(keyword)
 
     if (!shop) {
-      return res.status(404).json({
-        statusCode: 404,
-        error: 'NOT_FOUND',
-        message: '와인샵 조회 실패',
-      })
+      return res
+        .status(200)
+        .json({ statusCode: 200, message: '와인샵 조회 실패', data: [] })
     }
 
     return res
