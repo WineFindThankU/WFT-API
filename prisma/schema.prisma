@@ -44,9 +44,10 @@ model User {
 model Shop {
   sh_no        String       @id @default(cuid())
   sh_name      String       @db.VarChar(100)
-  sh_address   String?      @db.VarChar(100)
+  sh_name_uni  String
+  sh_address   String       @db.VarChar(200)
   sh_tell      String?      @db.VarChar(100)
-  sh_url       String?      @db.VarChar(255)
+  sh_url       String?
   sh_longitude Float?
   sh_latitude  Float?
   created_at   DateTime     @default(now())
@@ -79,13 +80,13 @@ model UserShop {
 
 model Wine {
   wn_no       String     @id @default(cuid())
-  wn_brand    String     @db.VarChar(100)
-  wn_name     String     @db.VarChar(100)
-  wn_name_uni String?
-  wn_name_en  String?    @db.VarChar(200)
-  wn_country  String?    @db.VarChar(100)
-  wn_nation   String?    @db.VarChar(100)
-  wn_kind     String?    @db.VarChar(100)
+  wn_brand    String     @db.VarChar(200)
+  wn_name     String     @db.VarChar(200)
+  wn_name_uni String
+  wn_name_en  String     @db.VarChar(200)
+  wn_country  String     @db.VarChar(100)
+  wn_nation   String?    @db.VarChar(200)
+  wn_kind     String?
   wn_alcohol  String?    @db.VarChar(100)
   wn_img      String?
   created_at  DateTime   @default(now())
