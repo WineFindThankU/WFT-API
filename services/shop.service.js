@@ -30,6 +30,8 @@ export const findShopByLocation = async (
       sh_address: true,
       sh_tell: true,
       sh_url: true,
+      sh_latitude: true,
+      sh_longitude: true,
     },
   })
 }
@@ -43,6 +45,8 @@ export const findShop = async () => {
       sh_address: true,
       sh_tell: true,
       sh_url: true,
+      sh_latitude: true,
+      sh_longitude: true,
     },
   })
 }
@@ -66,6 +70,8 @@ export const findShopByKeyword = async (keyword) => {
       sh_address: true,
       sh_tell: true,
       sh_url: true,
+      sh_latitude: true,
+      sh_longitude: true,
     },
   })
 }
@@ -80,6 +86,8 @@ export const findOneShop = async (sh_no) => {
       sh_address: true,
       sh_tell: true,
       sh_url: true,
+      sh_latitude: true,
+      sh_longitude: true,
     },
   })
 }
