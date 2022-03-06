@@ -88,6 +88,16 @@ export const findOneShop = async (sh_no) => {
       sh_url: true,
       sh_latitude: true,
       sh_longitude: true,
+      userWines: {
+        orderBy: {
+          created_at: 'desc',
+        },
+        select: {
+          uw_no: true,
+          uw_name: true,
+          uw_img: true,
+        },
+      },
     },
   })
 }
