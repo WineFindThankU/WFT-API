@@ -4,44 +4,71 @@ const prisma = new PrismaClient()
 import { toUniCode } from '../utils/text.js'
 
 export const createUserWine = async (us_no, sh_no, wn_no, datas = {}) => {
-  if (wn_no) {
-    return await prisma.userWine.create({
-      data: {
-        user: {
-          connect: {
-            us_no: us_no,
+  const createUserWine = wn_no
+    ? prisma.userWine.create({
+        data: {
+          user: {
+            connect: {
+              us_no: us_no,
+            },
           },
-        },
-        shop: {
-          connect: {
-            sh_no: sh_no,
+          shop: {
+            connect: {
+              sh_no: sh_no,
+            },
           },
-        },
-        wine: {
-          connect: {
-            wn_no: wn_no,
+          wine: {
+            connect: {
+              wn_no: wn_no,
+            },
           },
+          ...datas,
         },
-        ...datas,
+      })
+    : prisma.userWine.create({
+        data: {
+          user: {
+            connect: {
+              us_no: us_no,
+            },
+          },
+          shop: {
+            connect: {
+              sh_no: sh_no,
+            },
+          },
+          ...datas,
+        },
+      })
+
+  const upUserShopWineCnt = prisma.userShop.upsert({
+    where: {
+      us_no_sh_no: {
+        us_no: us_no,
+        sh_no: sh_no,
       },
-    })
-  } else {
-    return await prisma.userWine.create({
-      data: {
-        user: {
-          connect: {
-            us_no: us_no,
-          },
-        },
-        shop: {
-          connect: {
-            sh_no: sh_no,
-          },
-        },
-        ...datas,
+    },
+    update: {
+      uh_wine_cnt: {
+        increment: 1,
       },
-    })
-  }
+    },
+    create: {
+      user: {
+        connect: {
+          us_no: us_no,
+        },
+      },
+      shop: {
+        connect: {
+          sh_no: sh_no,
+        },
+      },
+      uh_wine_cnt: 1,
+    },
+  })
+
+  await prisma.$transaction([createUserWine, upUserShopWineCnt])
 }
 
 export const findOneUserWine = async (us_no, uw_no) => {
@@ -53,12 +80,41 @@ export const findOneUserWine = async (us_no, uw_no) => {
   })
 }
 
-export const deleteUserWine = async (uw_no) => {
-  return await prisma.userWine.delete({
+export const deleteUserWine = async (us_no, sh_no, uw_no) => {
+  const deleteUserWine = prisma.userWine.delete({
     where: {
       uw_no: uw_no,
     },
   })
+
+  const downUserShopWineCnt = prisma.userShop.upsert({
+    where: {
+      us_no_sh_no: {
+        us_no: us_no,
+        sh_no: sh_no,
+      },
+    },
+    update: {
+      uh_wine_cnt: {
+        decrement: 1,
+      },
+    },
+    create: {
+      user: {
+        connect: {
+          us_no: us_no,
+        },
+      },
+      shop: {
+        connect: {
+          sh_no: sh_no,
+        },
+      },
+      uh_wine_cnt: 0,
+    },
+  })
+
+  await prisma.$transaction([deleteUserWine, downUserShopWineCnt])
 }
 
 export const findWineByKeyword = async (keyword) => {

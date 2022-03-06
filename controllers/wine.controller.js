@@ -40,7 +40,9 @@ export const wineDelete = async (req, res) => {
   const { user, body } = req
   const { uw_no } = body
 
-  if (!(await findOneUserWine(user.us_no, uw_no))) {
+  const { sh_no } = await findOneUserWine(user.us_no, uw_no)
+
+  if (!sh_no) {
     return res.status(404).json({
       statusCode: 404,
       error: 'NOT_FOUND',
@@ -48,7 +50,7 @@ export const wineDelete = async (req, res) => {
     })
   }
 
-  await deleteUserWine(uw_no)
+  await deleteUserWine(user.us_no, sh_no, uw_no)
 
   return res.status(201).json({ statusCode: 200, message: '와인 삭제 성공' })
 }

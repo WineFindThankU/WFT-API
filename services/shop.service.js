@@ -154,3 +154,93 @@ export const updateShopBookmark = async (us_no, sh_no, bookmark) => {
     await createUserShop(us_no, sh_no, { uh_bookmark: bookmark })
   }
 }
+
+export const upsertUserShopWineCnt = async (
+  us_no,
+  sh_no,
+  plus = true,
+  defaultCnt = 0,
+) => {
+  const code = plus
+    ? prisma.userShop.upsert({
+        where: {
+          us_no_sh_no: {
+            us_no: us_no,
+            sh_no: sh_no,
+          },
+        },
+        update: {
+          uh_wine_cnt: {
+            increment: 1,
+          },
+        },
+        create: {
+          user: {
+            connect: {
+              us_no: us_no,
+            },
+          },
+          shop: {
+            connect: {
+              sh_no: sh_no,
+            },
+          },
+          uh_wine_cnt: defaultCnt,
+        },
+      })
+    : prisma.userShop.upsert({
+        where: {
+          us_no_sh_no: {
+            us_no: us_no,
+            sh_no: sh_no,
+          },
+        },
+        update: {
+          uh_wine_cnt: {
+            decrement: 1,
+          },
+        },
+        create: {
+          user: {
+            connect: {
+              us_no: us_no,
+            },
+          },
+          shop: {
+            connect: {
+              sh_no: sh_no,
+            },
+          },
+          uh_wine_cnt: defaultCnt,
+        },
+      })
+
+  return await code
+}
+
+export const upsertUserShopBookmark = async (us_no, sh_no, bookmark) => {
+  return await prisma.userShop.upsert({
+    where: {
+      us_no_sh_no: {
+        us_no: us_no,
+        sh_no: sh_no,
+      },
+    },
+    update: {
+      uh_bookmark: bookmark,
+    },
+    create: {
+      user: {
+        connect: {
+          us_no: us_no,
+        },
+      },
+      shop: {
+        connect: {
+          sh_no: sh_no,
+        },
+      },
+      uh_bookmark: bookmark,
+    },
+  })
+}

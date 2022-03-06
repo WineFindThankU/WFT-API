@@ -1,7 +1,13 @@
 import { Router } from 'express'
-import { body } from 'express-validator'
+import { body, query } from 'express-validator'
 
-import { signUp, userDisable } from '../../controllers/user.controller.js'
+import {
+  signUp,
+  userDisable,
+  userWine,
+  userShop,
+  userInfo,
+} from '../../controllers/user.controller.js'
 
 import { authJWT } from '../../utils/passport.js'
 import { validationFunc, isIfExists } from '../../utils/validation.js'
@@ -30,5 +36,31 @@ router.post(
   signUp,
 )
 router.delete('/', authJWT, userDisable)
+
+router.get(
+  '/wine',
+  [
+    query('page').isNumeric(),
+    isIfExists('limit', query).isNumeric(),
+
+    validationFunc,
+  ],
+  authJWT,
+  userWine,
+)
+
+router.get(
+  '/shop',
+  [
+    query('page').isNumeric(),
+    isIfExists('limit', query).isNumeric(),
+
+    validationFunc,
+  ],
+  authJWT,
+  userShop,
+)
+
+router.get('/info', authJWT, userInfo)
 
 export default router

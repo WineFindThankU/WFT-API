@@ -121,3 +121,51 @@ export const disableUser = async (no) => {
     },
   })
 }
+
+export const findWineByNo = async (us_no, options = {}) => {
+  return await prisma.userWine.findMany({
+    where: {
+      us_no: us_no,
+    },
+    orderBy: [
+      {
+        created_at: 'desc',
+      },
+    ],
+    ...options,
+  })
+}
+
+export const countWineByNo = async (us_no, options = {}) => {
+  return await prisma.userWine.count({
+    where: {
+      us_no: us_no,
+    },
+    ...options,
+  })
+}
+
+export const findShopByNo = async (us_no, options = {}) => {
+  return await prisma.userShop.findMany({
+    where: {
+      us_no: us_no,
+      uh_bookmark: true,
+    },
+    orderBy: [
+      {
+        created_at: 'desc',
+      },
+    ],
+    ...options,
+  })
+}
+
+export const countShopByNo = async (us_no, options = {}) => {
+  return await prisma.userShop.count({
+    where: {
+      us_no: us_no,
+      uh_bookmark: true,
+    },
+    ...options,
+  })
+}

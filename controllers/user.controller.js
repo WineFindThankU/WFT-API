@@ -2,6 +2,7 @@ import { compare } from 'bcrypt'
 import { generate } from 'randomstring'
 import moment from 'moment'
 
+import { list } from '../utils/func.js'
 import {
   createEmailUser,
   createSnsUser,
@@ -10,6 +11,10 @@ import {
   checkNick,
   updateTaste,
   disableUser,
+  countWineByNo,
+  findWineByNo,
+  countShopByNo,
+  findShopByNo,
 } from '../services/user.service.js'
 
 export const signUp = async (req, res) => {
@@ -109,5 +114,136 @@ export const userDisable = async (req, res) => {
   return res.status(200).json({
     statusCode: 200,
     message: '회원탈퇴 성공',
+  })
+}
+
+export const userWine = async (req, res) => {
+  const { limit, user, skip, take } = list(req)
+
+  const wineCnt = await countWineByNo(user.us_no)
+
+  let next = false
+
+  if (wineCnt <= 0) {
+    return res.status(200).json({
+      statusCode: 200,
+      message: '구매 와인 리스트 조회 성공',
+      data: {
+        count: wineCnt,
+        next: next,
+        list: [],
+      },
+    })
+  }
+
+  const wineList = []
+  const _wine = await findWineByNo(user.us_no, {
+    skip: skip,
+    take: take,
+    select: {
+      uw_no: true,
+      uw_name: true,
+      uw_country: true,
+      uw_vintage: true,
+      purchased_at: true,
+      shop: {
+        select: {
+          sh_no: true,
+          sh_name: true,
+        },
+      },
+      wine: {
+        select: {
+          wn_no: true,
+          wn_name: true,
+          wn_name_en: true,
+          wn_kind: true,
+          wn_country: true,
+          wn_alcohol: true,
+        },
+      },
+    },
+  })
+
+  for (let i = 0; i < _wine.length; i++) {
+    if (i === limit) {
+      next = true
+      break
+    }
+    wineList.push(_wine[i])
+  }
+
+  return res.status(200).json({
+    statusCode: 200,
+    message: '구매 와인 리스트 조회 성공',
+    data: {
+      count: wineCnt,
+      next: next,
+      list: wineList,
+    },
+  })
+}
+
+export const userShop = async (req, res) => {
+  const { limit, user, skip, take } = list(req)
+
+  const shopCnt = await countShopByNo(user.us_no)
+
+  let next = false
+
+  if (shopCnt <= 0) {
+    return res.status(200).json({
+      statusCode: 200,
+      message: '즐겨찾기한 와인샵 리스트 조회 성공',
+      data: {
+        count: shopCnt,
+        next: next,
+        list: [],
+      },
+    })
+  }
+
+  const shopList = []
+  const _shop = await findShopByNo(user.us_no, {
+    skip: skip,
+    take: take,
+    select: {
+      shop: {
+        select: {
+          sh_no: true,
+          sh_name: true,
+          sh_category: true,
+        },
+      },
+      uh_bookmark: true,
+      uh_wine_cnt: true,
+    },
+  })
+
+  for (let i = 0; i < _shop.length; i++) {
+    if (i === limit) {
+      next = true
+      break
+    }
+    shopList.push(_shop[i])
+  }
+
+  return res.status(200).json({
+    statusCode: 200,
+    message: '즐겨찾기한 와인샵 리스트 조회 성공',
+    data: {
+      count: shopCnt,
+      next: next,
+      list: shopList,
+    },
+  })
+}
+
+export const userInfo = async (req, res) => {
+  const user = req.user
+
+  return res.status(200).json({
+    statusCode: 200,
+    message: '마이페이지 조회 성공',
   })
 }
