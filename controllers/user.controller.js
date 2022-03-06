@@ -15,6 +15,8 @@ import {
   findWineByNo,
   countShopByNo,
   findShopByNo,
+  findBookmarkShopByNo,
+  countBookmarkShopByNo,
 } from '../services/user.service.js'
 
 export const signUp = async (req, res) => {
@@ -205,6 +207,61 @@ export const userShop = async (req, res) => {
 
   const shopList = []
   const _shop = await findShopByNo(user.us_no, {
+    skip: skip,
+    take: take,
+    select: {
+      shop: {
+        select: {
+          sh_no: true,
+          sh_name: true,
+          sh_category: true,
+        },
+      },
+      uh_bookmark: true,
+      uh_wine_cnt: true,
+    },
+  })
+
+  for (let i = 0; i < _shop.length; i++) {
+    if (i === limit) {
+      next = true
+      break
+    }
+    shopList.push(_shop[i])
+  }
+
+  return res.status(200).json({
+    statusCode: 200,
+    message: '즐겨찾기한 와인샵 리스트 조회 성공',
+    data: {
+      count: shopCnt,
+      next: next,
+      list: shopList,
+    },
+  })
+}
+
+export const userBookmark = async (req, res) => {
+  const { limit, user, skip, take } = list(req)
+
+  const shopCnt = await countBookmarkShopByNo(user.us_no)
+
+  let next = false
+
+  if (shopCnt <= 0) {
+    return res.status(200).json({
+      statusCode: 200,
+      message: '즐겨찾기한 와인샵 리스트 조회 성공',
+      data: {
+        count: shopCnt,
+        next: next,
+        list: [],
+      },
+    })
+  }
+
+  const shopList = []
+  const _shop = await findBookmarkShopByNo(user.us_no, {
     skip: skip,
     take: take,
     select: {

@@ -149,7 +149,9 @@ export const findShopByNo = async (us_no, options = {}) => {
   return await prisma.userShop.findMany({
     where: {
       us_no: us_no,
-      uh_bookmark: true,
+      uh_wine_cnt: {
+        gt: 1,
+      },
     },
     orderBy: [
       {
@@ -161,6 +163,33 @@ export const findShopByNo = async (us_no, options = {}) => {
 }
 
 export const countShopByNo = async (us_no, options = {}) => {
+  return await prisma.userShop.count({
+    where: {
+      us_no: us_no,
+      uh_wine_cnt: {
+        gt: 1,
+      },
+    },
+    ...options,
+  })
+}
+
+export const findBookmarkShopByNo = async (us_no, options = {}) => {
+  return await prisma.userShop.findMany({
+    where: {
+      us_no: us_no,
+      uh_bookmark: true,
+    },
+    orderBy: [
+      {
+        created_at: 'desc',
+      },
+    ],
+    ...options,
+  })
+}
+
+export const countBookmarkShopByNo = async (us_no, options = {}) => {
   return await prisma.userShop.count({
     where: {
       us_no: us_no,

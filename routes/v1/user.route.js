@@ -6,6 +6,7 @@ import {
   userDisable,
   userWine,
   userShop,
+  userBookmark,
   userInfo,
 } from '../../controllers/user.controller.js'
 
@@ -59,6 +60,18 @@ router.get(
   ],
   authJWT,
   userShop,
+)
+
+router.get(
+  '/bookmark',
+  [
+    query('page').isNumeric(),
+    isIfExists('limit', query).isNumeric(),
+
+    validationFunc,
+  ],
+  authJWT,
+  userBookmark,
 )
 
 router.get('/info', authJWT, userInfo)
