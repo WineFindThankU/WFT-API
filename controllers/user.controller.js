@@ -34,7 +34,7 @@ export const signUp = async (req, res) => {
     if (type === 'EMAIL' && !(await compare(pwd, user.us_pwd))) {
       return res.status(401).json({
         statusCode: 401,
-        error: 'SignUnauthorized',
+        error: 'UNAUTHORIZED_SIGN',
         message: '취향 업데이트 실패',
       })
     }
@@ -44,9 +44,9 @@ export const signUp = async (req, res) => {
     } catch (e) {
       console.log(e)
       return res.status(400).json({
-        statusCode: 400,
-        error: 'REQUEST_ERROR',
-        message: '잘못된 요청',
+        statusCode: 500,
+        error: 'DATA_ERROR',
+        message: '데이터 처리 실패',
       })
     }
 
@@ -64,7 +64,7 @@ export const signUp = async (req, res) => {
         return res.status(403).json({
           statusCode: 403,
           error: 'DISABLED_USER',
-          message: '비활성화된 계정입니다',
+          message: '비활성화된 유저',
         })
       }
     }
@@ -94,10 +94,10 @@ export const signUp = async (req, res) => {
       }
     } catch (e) {
       console.log(e)
-      return res.status(400).json({
-        statusCode: 400,
-        error: 'REQUEST_ERROR',
-        message: '잘못된 요청',
+      return res.status(500).json({
+        statusCode: 500,
+        error: 'DATA_ERROR',
+        message: '데이터 처리 실패',
       })
     }
 
@@ -196,7 +196,7 @@ export const userShop = async (req, res) => {
   if (shopCnt <= 0) {
     return res.status(200).json({
       statusCode: 200,
-      message: '즐겨찾기한 와인샵 리스트 조회 성공',
+      message: '다녀온 와인샵 리스트 조회 성공',
       data: {
         count: shopCnt,
         next: next,
@@ -232,7 +232,7 @@ export const userShop = async (req, res) => {
 
   return res.status(200).json({
     statusCode: 200,
-    message: '즐겨찾기한 와인샵 리스트 조회 성공',
+    message: '다녀온 와인샵 리스트 조회 성공',
     data: {
       count: shopCnt,
       next: next,

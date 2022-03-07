@@ -24,8 +24,8 @@ export const setPassport = () => {
         if (!user) {
           return cb(null, false, {
             statusCode: 404,
-            error: 'NOT_FOUND',
-            message: '유저를 찾지 못했습니다',
+            error: 'USER_NOT_FOUND',
+            message: '유저 조회 실패',
           })
         }
 
@@ -38,13 +38,13 @@ export const setPassport = () => {
             return cb(null, false, {
               statusCode: 403,
               error: 'DISABLED_USER',
-              message: '비활성화된 계정입니다',
+              message: '비활성화된 유저',
             })
           } else {
             return cb(null, false, {
               statusCode: 404,
-              error: 'NOT_FOUND',
-              message: '유저를 찾지 못했습니다',
+              error: 'USER_NOT_FOUND',
+              message: '유저 조회 실패',
             })
           }
         }
@@ -70,8 +70,8 @@ export const setPassport = () => {
         if (!user) {
           return cb(null, false, {
             statusCode: 404,
-            error: 'NOT_FOUND',
-            message: '유저를 찾지 못했습니다',
+            error: 'USER_NOT_FOUND',
+            message: '유저 조회 실패',
           })
         }
 
@@ -84,13 +84,13 @@ export const setPassport = () => {
             return cb(null, false, {
               statusCode: 403,
               error: 'DISABLED_USER',
-              message: '비활성화된 계정입니다',
+              message: '비활성화된 유저',
             })
           } else {
             return cb(null, false, {
               statusCode: 404,
-              error: 'NOT_FOUND',
-              message: '유저를 찾지 못했습니다',
+              error: 'USER_NOT_FOUND',
+              message: '유저 조회 실패',
             })
           }
         }
@@ -102,7 +102,7 @@ export const setPassport = () => {
         if (!isMatch) {
           return cb(null, false, {
             statusCode: 401,
-            error: 'RefreshTokenExpired',
+            error: 'EXPIRED_REFRESH_TOKEN',
             message: '만료된 토근',
           })
         }
@@ -136,8 +136,8 @@ export const setPassport = () => {
         if (!user) {
           return cb(null, false, {
             statusCode: 404,
-            error: 'NOT_FOUND',
-            message: '유저를 찾지 못했습니다',
+            error: 'USER_NOT_FOUND',
+            message: '유저 조회 실패',
           })
         }
 
@@ -150,13 +150,13 @@ export const setPassport = () => {
             return cb(null, false, {
               statusCode: 403,
               error: 'DISABLED_USER',
-              message: '비활성화된 계정입니다',
+              message: '비활성화된 유저',
             })
           } else {
             return cb(null, false, {
               statusCode: 404,
-              error: 'NOT_FOUND',
-              message: '유저를 찾지 못했습니다',
+              error: 'USER_NOT_FOUND',
+              message: '유저 조회 실패',
             })
           }
         }
@@ -164,7 +164,7 @@ export const setPassport = () => {
         if (type === 'EMAIL' && !(await compare(pwd, user.us_pwd))) {
           return cb(null, false, {
             statusCode: 401,
-            error: 'SignUnauthorized',
+            error: 'UNAUTHORIZED_SIGN',
             message: '로그인 실패',
           })
         }
@@ -195,7 +195,7 @@ export const authLocal = (req, res, next) => {
   } catch (e) {
     return res.status(401).json({
       statusCode: 401,
-      error: 'SignUnauthorized',
+      error: 'UNAUTHORIZED_SIGN',
       message: '로그인 실패',
     })
   }
@@ -215,7 +215,7 @@ export const authJWT = (req, res, next) => {
   } catch (e) {
     return res.status(401).json({
       statusCode: 401,
-      error: 'AccessTokenExpired',
+      error: 'EXPIRED_ACCESS_TOKEN',
       message: '만료된 토근',
     })
   }
@@ -239,7 +239,7 @@ export const authJWTRefresh = (req, res, next) => {
   } catch (e) {
     return res.status(401).json({
       statusCode: 401,
-      error: 'RefreshTokenExpired',
+      error: 'EXPIRED_REFRESH_TOKEN',
       message: '만료된 토근',
     })
   }
