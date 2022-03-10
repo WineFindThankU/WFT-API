@@ -1,7 +1,7 @@
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
 const prisma = new PrismaClient()
-import { toUniCode } from '../utils/text.js'
+import { toUniCode, toChoUniCode } from '../utils/text.js'
 
 export const createUserWine = async (us_no, sh_no, wn_no, datas = {}) => {
   const createUserWine = wn_no
@@ -122,10 +122,11 @@ export const deleteUserWine = async (us_no, sh_no, uw_no) => {
 }
 
 export const findWineByKeyword = async (keyword) => {
-  const _keyword = '%' + toUniCode(keyword).replaceAll('\\', '\\\\') + '%'
+  const _keyword = '%' + toUniCode(keyword, '\\\\') + '%'
+  const _keyword_cho = '%' + toChoUniCode(keyword, '%') + '%'
 
   const query =
-    await prisma.$queryRaw`SELECT wn.wn_no FROM tb_wine AS wn WHERE wn.wn_name_uni LIKE ${_keyword}`
+    await prisma.$queryRaw`SELECT wn.wn_no FROM tb_wine AS wn WHERE wn.wn_name_uni LIKE ${_keyword} OR wn.wn_name_uni LIKE ${_keyword_cho}`
 
   return await prisma.wine.findMany({
     where: {
