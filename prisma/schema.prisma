@@ -106,9 +106,11 @@ model UserWine {
   uw_country   String   @db.VarChar(100)
   uw_vintage   String   @db.VarChar(10)
   uw_img       String?
+  uw_disabled  Boolean  @default(false)
   purchased_at DateTime
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
+  disabled_at  DateTime?
   shop         Shop     @relation(fields: [sh_no], references: [sh_no])
   user         User     @relation(fields: [us_no], references: [us_no])
   wine         Wine?    @relation(fields: [wn_no], references: [wn_no])

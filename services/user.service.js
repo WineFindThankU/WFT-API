@@ -126,6 +126,7 @@ export const findWineByNo = async (us_no, options = {}) => {
   return await prisma.userWine.findMany({
     where: {
       us_no: us_no,
+      uw_disabled: false,
     },
     orderBy: [
       {
@@ -140,6 +141,7 @@ export const countWineByNo = async (us_no, options = {}) => {
   return await prisma.userWine.count({
     where: {
       us_no: us_no,
+      uw_disabled: false,
     },
     ...options,
   })

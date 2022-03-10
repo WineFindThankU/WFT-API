@@ -81,9 +81,13 @@ export const findOneUserWine = async (us_no, uw_no) => {
 }
 
 export const deleteUserWine = async (us_no, sh_no, uw_no) => {
-  const deleteUserWine = prisma.userWine.delete({
+  const deleteUserWine = prisma.userWine.update({
     where: {
       uw_no: uw_no,
+    },
+    data: {
+      uw_disabled: true,
+      disabled_at: new Date(),
     },
   })
 
