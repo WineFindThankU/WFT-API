@@ -200,3 +200,14 @@ export const countBookmarkShopByNo = async (us_no, options = {}) => {
     ...options,
   })
 }
+
+export const findUserInfo = async (us_no) => {
+  return await prisma.user.findUnique({
+    where: { us_no: us_no },
+    select: {
+      us_id: true,
+      us_nick: true,
+      taste_type: true,
+    },
+  })
+}

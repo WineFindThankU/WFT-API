@@ -17,6 +17,7 @@ import {
   findShopByNo,
   findBookmarkShopByNo,
   countBookmarkShopByNo,
+  findUserInfo,
 } from '../services/user.service.js'
 
 export const signUp = async (req, res) => {
@@ -152,6 +153,9 @@ export const userWine = async (req, res) => {
         select: {
           sh_no: true,
           sh_name: true,
+          sh_category: true,
+          sh_url: true,
+          sh_time: true,
         },
       },
       wine: {
@@ -162,6 +166,8 @@ export const userWine = async (req, res) => {
           wn_kind: true,
           wn_country: true,
           wn_alcohol: true,
+          wn_img: true,
+          wn_category: true,
         },
       },
     },
@@ -215,6 +221,8 @@ export const userShop = async (req, res) => {
           sh_no: true,
           sh_name: true,
           sh_category: true,
+          sh_url: true,
+          sh_time: true,
         },
       },
       uh_bookmark: true,
@@ -270,6 +278,8 @@ export const userBookmark = async (req, res) => {
           sh_no: true,
           sh_name: true,
           sh_category: true,
+          sh_url: true,
+          sh_time: true,
         },
       },
       uh_bookmark: true,
@@ -299,8 +309,88 @@ export const userBookmark = async (req, res) => {
 export const userInfo = async (req, res) => {
   const user = req.user
 
+  const userInfo = await findUserInfo(user.us_no)
+
+  const wine = {
+    count: await countWineByNo(user.us_no),
+    data: await findWineByNo(user.us_no, {
+      select: {
+        uw_no: true,
+        uw_name: true,
+        uw_country: true,
+        uw_vintage: true,
+        purchased_at: true,
+        shop: {
+          select: {
+            sh_no: true,
+            sh_name: true,
+            sh_category: true,
+            sh_url: true,
+            sh_time: true,
+          },
+        },
+        wine: {
+          select: {
+            wn_no: true,
+            wn_name: true,
+            wn_name_en: true,
+            wn_kind: true,
+            wn_country: true,
+            wn_alcohol: true,
+            wn_img: true,
+            wn_category: true,
+          },
+        },
+      },
+    }),
+  }
+
+  const shop = {
+    count: await countShopByNo(user.us_no),
+    data: await findShopByNo(user.us_no, {
+      select: {
+        shop: {
+          select: {
+            sh_no: true,
+            sh_name: true,
+            sh_category: true,
+            sh_url: true,
+            sh_time: true,
+          },
+        },
+        uh_bookmark: true,
+        uh_wine_cnt: true,
+      },
+    }),
+  }
+
+  const bookmark = {
+    count: await countBookmarkShopByNo(user.us_no),
+    data: await findBookmarkShopByNo(user.us_no, {
+      select: {
+        shop: {
+          select: {
+            sh_no: true,
+            sh_name: true,
+            sh_category: true,
+            sh_url: true,
+            sh_time: true,
+          },
+        },
+        uh_bookmark: true,
+        uh_wine_cnt: true,
+      },
+    }),
+  }
+
   return res.status(200).json({
     statusCode: 200,
     message: '마이페이지 조회 성공',
+    data: {
+      user: userInfo,
+      wine: wine,
+      shop: shop,
+      bookmark: bookmark,
+    },
   })
 }
