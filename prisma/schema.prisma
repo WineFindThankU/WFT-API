@@ -54,6 +54,8 @@ model Shop {
   updated_at   DateTime     @updatedAt
   sh_dong      String?
   sh_category  ShopCategory @default(ETC)
+  sh_img       String?
+  sh_time      Json?
   dong         Dong?        @relation(fields: [sh_dong], references: [do_no])
   userShops    UserShop[]
   userWines    UserWine[]
@@ -91,6 +93,7 @@ model Wine {
   wn_img      String?
   created_at  DateTime   @default(now())
   updated_at  DateTime   @updatedAt
+  wn_category String?
   userWines   UserWine[]
 
   @@index([wn_name])
@@ -98,22 +101,22 @@ model Wine {
 }
 
 model UserWine {
-  uw_no        String   @id @default(cuid())
+  uw_no        String    @id @default(cuid())
   us_no        String
   sh_no        String
   wn_no        String?
-  uw_name      String   @db.VarChar(100)
-  uw_country   String   @db.VarChar(100)
-  uw_vintage   String   @db.VarChar(10)
+  uw_name      String    @db.VarChar(100)
+  uw_country   String    @db.VarChar(100)
+  uw_vintage   String    @db.VarChar(10)
   uw_img       String?
-  uw_disabled  Boolean  @default(false)
   purchased_at DateTime
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
   disabled_at  DateTime?
-  shop         Shop     @relation(fields: [sh_no], references: [sh_no])
-  user         User     @relation(fields: [us_no], references: [us_no])
-  wine         Wine?    @relation(fields: [wn_no], references: [wn_no])
+  uw_disabled  Boolean   @default(false)
+  shop         Shop      @relation(fields: [sh_no], references: [sh_no])
+  user         User      @relation(fields: [us_no], references: [us_no])
+  wine         Wine?     @relation(fields: [wn_no], references: [wn_no])
 
   @@index([sh_no])
   @@index([us_no])
