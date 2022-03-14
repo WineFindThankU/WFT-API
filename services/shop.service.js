@@ -96,6 +96,18 @@ export const findOneShop = async (sh_no) => {
           uw_no: true,
           uw_name: true,
           uw_img: true,
+          wine: {
+            select: {
+              wn_no: true,
+              wn_name: true,
+              wn_name_en: true,
+              wn_kind: true,
+              wn_country: true,
+              wn_alcohol: true,
+              wn_img: true,
+              wn_category: true,
+            },
+          },
         },
       },
     },
