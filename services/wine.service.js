@@ -123,10 +123,13 @@ export const deleteUserWine = async (us_no, sh_no, uw_no) => {
 
 export const findWineByKeyword = async (keyword) => {
   const _keyword = '%' + toUniCode(keyword, '\\\\') + '%'
-  const _keyword_cho = '%' + toChoUniCode(keyword, '%') + '%'
+  // const _keyword_cho = '%' + toChoUniCode(keyword, '%') + '%'
 
   const query =
-    await prisma.$queryRaw`SELECT wn.wn_no FROM tb_wine AS wn WHERE wn.wn_name_uni LIKE ${_keyword} OR wn.wn_name_uni LIKE ${_keyword_cho}`
+    await prisma.$queryRaw`SELECT wn.wn_no FROM tb_wine AS wn WHERE wn.wn_name_uni LIKE ${_keyword}`
+
+  // const query =
+  //   await prisma.$queryRaw`SELECT wn.wn_no FROM tb_wine AS wn WHERE wn.wn_name_uni LIKE ${_keyword} OR wn.wn_name_uni LIKE ${_keyword_cho}`
 
   return await prisma.wine.findMany({
     where: {
