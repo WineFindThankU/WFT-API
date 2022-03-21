@@ -61,13 +61,13 @@ export const signUp = async (req, res) => {
       const now = moment().startOf('day')
       const diff = moment.duration(now.diff(disabledAt)).asDays()
 
-      if (diff < 7) {
-        return res.status(403).json({
-          statusCode: 403,
-          error: 'DISABLED_USER',
-          message: '비활성화된 유저',
-        })
-      }
+      // if (diff < 7) {
+      //   return res.status(403).json({
+      //     statusCode: 403,
+      //     error: 'DISABLED_USER',
+      //     message: '비활성화된 유저',
+      //   })
+      // }
     }
 
     if (data.nick && (await checkNick(data.nick))) {
