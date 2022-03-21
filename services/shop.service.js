@@ -92,6 +92,9 @@ export const findOneShop = async (sh_no) => {
         orderBy: {
           created_at: 'desc',
         },
+        where: {
+          uw_disabled: false,
+        },
         select: {
           uw_no: true,
           uw_name: true,
