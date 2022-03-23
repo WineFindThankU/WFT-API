@@ -66,7 +66,26 @@ export const shopDetail = async (req, res) => {
   }
 
   const userShop = await findOneUserShop(user.us_no, sh_no)
-  shop = { ...shop, sh_bookmark: userShop ? userShop.uh_bookmark : false }
+
+  const userWines = []
+  shop.userWines.map((userWine) => {
+    userWines.push({
+      ...userWine,
+      wine: {
+        ...userWine.wine,
+        wn_img:
+          userWine.wine && userWine.wine.wn_img
+            ? userWine.wine.wn_img
+            : 'http://image.toast.com/aaaacby/wft/empty/empty_105x147.png',
+      },
+    })
+  })
+
+  shop = {
+    ...shop,
+    userWines: userWines,
+    sh_bookmark: userShop ? userShop.uh_bookmark : false,
+  }
 
   return res
     .status(200)

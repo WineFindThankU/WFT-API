@@ -178,7 +178,17 @@ export const userWine = async (req, res) => {
       next = true
       break
     }
-    wineList.push(_wine[i])
+
+    wineList.push({
+      ..._wine[i],
+      wine: {
+        ..._wine[i].wine,
+        wn_img:
+          _wine[i].wine && _wine[i].wine.wn_img
+            ? _wine[i].wine.wn_img
+            : 'http://image.toast.com/aaaacby/wft/empty/empty_85x160.png',
+      },
+    })
   }
 
   return res.status(200).json({
@@ -223,6 +233,7 @@ export const userShop = async (req, res) => {
           sh_category: true,
           sh_url: true,
           sh_time: true,
+          sh_img: true,
         },
       },
       uh_bookmark: true,
@@ -235,7 +246,16 @@ export const userShop = async (req, res) => {
       next = true
       break
     }
-    shopList.push(_shop[i])
+    shopList.push({
+      ..._shop[i],
+      shop: {
+        ..._shop[i].shop,
+        sh_img:
+          _shop[i].shop && _shop[i].shop.sh_img
+            ? _shop[i].shop.sh_img
+            : 'http://image.toast.com/aaaacby/wft/empty/empty_80x80.png',
+      },
+    })
   }
 
   return res.status(200).json({
@@ -280,6 +300,7 @@ export const userBookmark = async (req, res) => {
           sh_category: true,
           sh_url: true,
           sh_time: true,
+          sh_img: true,
         },
       },
       uh_bookmark: true,
@@ -292,7 +313,16 @@ export const userBookmark = async (req, res) => {
       next = true
       break
     }
-    shopList.push(_shop[i])
+    shopList.push({
+      ..._shop[i],
+      shop: {
+        ..._shop[i].shop,
+        sh_img:
+          _shop[i].shop && _shop[i].shop.sh_img
+            ? _shop[i].shop.sh_img
+            : 'http://image.toast.com/aaaacby/wft/empty/empty_80x80.png',
+      },
+    })
   }
 
   return res.status(200).json({
@@ -311,76 +341,123 @@ export const userInfo = async (req, res) => {
 
   const userInfo = await findUserInfo(user.us_no)
 
-  const wine = {
-    count: await countWineByNo(user.us_no),
-    data: await findWineByNo(user.us_no, {
-      select: {
-        uw_no: true,
-        uw_name: true,
-        uw_country: true,
-        uw_vintage: true,
-        purchased_at: true,
-        shop: {
-          select: {
-            sh_no: true,
-            sh_name: true,
-            sh_category: true,
-            sh_url: true,
-            sh_time: true,
-          },
-        },
-        wine: {
-          select: {
-            wn_no: true,
-            wn_name: true,
-            wn_name_en: true,
-            wn_kind: true,
-            wn_country: true,
-            wn_alcohol: true,
-            wn_img: true,
-            wn_category: true,
-          },
+  const wineData = []
+  const _wine = await findWineByNo(user.us_no, {
+    select: {
+      uw_no: true,
+      uw_name: true,
+      uw_country: true,
+      uw_vintage: true,
+      purchased_at: true,
+      shop: {
+        select: {
+          sh_no: true,
+          sh_name: true,
+          sh_category: true,
+          sh_url: true,
+          sh_time: true,
         },
       },
-    }),
+      wine: {
+        select: {
+          wn_no: true,
+          wn_name: true,
+          wn_name_en: true,
+          wn_kind: true,
+          wn_country: true,
+          wn_alcohol: true,
+          wn_img: true,
+          wn_category: true,
+        },
+      },
+    },
+  })
+  _wine.map((wine) => {
+    wineData.push({
+      ...wine,
+      wine: {
+        ...wine.wine,
+        wn_img:
+          wine.wine && wine.wine.wn_img
+            ? wine.wine.wn_img
+            : 'http://image.toast.com/aaaacby/wft/empty/empty_105x105.png',
+      },
+    })
+  })
+
+  const wine = {
+    count: await countWineByNo(user.us_no),
+    data: wineData,
   }
+
+  const shopData = []
+  const _shop = await findShopByNo(user.us_no, {
+    select: {
+      shop: {
+        select: {
+          sh_no: true,
+          sh_name: true,
+          sh_category: true,
+          sh_url: true,
+          sh_time: true,
+          sh_img: true,
+        },
+      },
+      uh_bookmark: true,
+      uh_wine_cnt: true,
+    },
+  })
+  _shop.map((shop) => {
+    shopData.push({
+      ...shop,
+      shop: {
+        ...shop.shop,
+        sh_img:
+          shop.shop && shop.shop.sh_img
+            ? shop.shop.sh_img
+            : 'http://image.toast.com/aaaacby/wft/empty/empty_160x82.png',
+      },
+    })
+  })
 
   const shop = {
     count: await countShopByNo(user.us_no),
-    data: await findShopByNo(user.us_no, {
-      select: {
-        shop: {
-          select: {
-            sh_no: true,
-            sh_name: true,
-            sh_category: true,
-            sh_url: true,
-            sh_time: true,
-          },
-        },
-        uh_bookmark: true,
-        uh_wine_cnt: true,
-      },
-    }),
+    data: shopData,
   }
+
+  const bookmarkData = []
+  const _bookmark = await findBookmarkShopByNo(user.us_no, {
+    select: {
+      shop: {
+        select: {
+          sh_no: true,
+          sh_name: true,
+          sh_category: true,
+          sh_url: true,
+          sh_time: true,
+          sh_img: true,
+        },
+      },
+      uh_bookmark: true,
+      uh_wine_cnt: true,
+    },
+  })
+  _bookmark.map((bookmark) => {
+    bookmarkData.push({
+      ...bookmark,
+      shop: {
+        ...bookmark.shop,
+        sh_img:
+          bookmark.shop && bookmark.shop.sh_img
+            ? bookmark.shop.sh_img
+            : 'http://image.toast.com/aaaacby/wft/empty/empty_160x82.png',
+      },
+    })
+  })
 
   const bookmark = {
     count: await countBookmarkShopByNo(user.us_no),
-    data: await findBookmarkShopByNo(user.us_no, {
-      select: {
-        shop: {
-          select: {
-            sh_no: true,
-            sh_name: true,
-            sh_category: true,
-            sh_url: true,
-            sh_time: true,
-          },
-        },
-        uh_bookmark: true,
-        uh_wine_cnt: true,
-      },
-    }),
+    data: bookmarkData,
   }
 
   return res.status(200).json({

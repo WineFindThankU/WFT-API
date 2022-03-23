@@ -152,7 +152,7 @@ export const findShopByNo = async (us_no, options = {}) => {
     where: {
       us_no: us_no,
       uh_wine_cnt: {
-        gt: 1,
+        gt: 0,
       },
     },
     orderBy: [
@@ -169,7 +169,7 @@ export const countShopByNo = async (us_no, options = {}) => {
     where: {
       us_no: us_no,
       uh_wine_cnt: {
-        gt: 1,
+        gt: 0,
       },
     },
     ...options,
