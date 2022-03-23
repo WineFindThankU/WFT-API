@@ -91,6 +91,7 @@ model Wine {
   wn_kind     String?
   wn_alcohol  String?    @db.VarChar(100)
   wn_img      String?
+  wn_source   String?    @db.VarChar(50)
   created_at  DateTime   @default(now())
   updated_at  DateTime   @updatedAt
   wn_category String?
