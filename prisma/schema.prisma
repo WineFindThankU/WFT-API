@@ -103,7 +103,7 @@ model Wine {
 
 model UserWine {
   uw_no        String    @id @default(cuid())
-  us_no        String
+  us_no        String?
   sh_no        String
   wn_no        String?
   uw_name      String    @db.VarChar(100)
@@ -116,7 +116,7 @@ model UserWine {
   disabled_at  DateTime?
   uw_disabled  Boolean   @default(false)
   shop         Shop      @relation(fields: [sh_no], references: [sh_no])
-  user         User      @relation(fields: [us_no], references: [us_no])
+  user         User?     @relation(fields: [us_no], references: [us_no])
   wine         Wine?     @relation(fields: [wn_no], references: [wn_no])
 
   @@index([sh_no])
