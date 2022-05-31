@@ -24,14 +24,33 @@ export const wineList = async (req, res) => {
 
 export const wineAdd = async (req, res) => {
   const { user, body } = req
-  const { sh_no, wn_no, name, country, vintage, purchased_at } = body
+  const {
+    sh_no,
+    wn_no,
+    name,
+    country,
+    vintage,
+    purchased_at,
+    price,
+    price_range,
+  } = body
 
-  await createUserWine(user.us_no, sh_no, wn_no, {
+  let data = {
     uw_name: name,
     uw_country: country,
     uw_vintage: vintage,
     purchased_at: moment(purchased_at).utc().toDate(),
-  })
+  }
+
+  if (price) {
+    data.uw_price = price
+  }
+
+  if (price_range) {
+    data.uw_price_range = price_range
+  }
+
+  await createUserWine(user.us_no, sh_no, wn_no, data)
 
   return res.status(201).json({ statusCode: 200, message: '와인 등록 성공' })
 }

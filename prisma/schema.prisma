@@ -56,6 +56,7 @@ model Shop {
   sh_category  ShopCategory @default(ETC)
   sh_img       String?
   sh_time      Json?
+  sh_disabled  Boolean      @default(false)
   dong         Dong?        @relation(fields: [sh_dong], references: [do_no])
   userShops    UserShop[]
   userWines    UserWine[]
@@ -91,10 +92,10 @@ model Wine {
   wn_kind     String?
   wn_alcohol  String?    @db.VarChar(100)
   wn_img      String?
-  wn_source   String?    @db.VarChar(50)
   created_at  DateTime   @default(now())
   updated_at  DateTime   @updatedAt
   wn_category String?
+  wn_source   String?    @db.VarChar(50)
   userWines   UserWine[]
 
   @@index([wn_name])
@@ -102,22 +103,24 @@ model Wine {
 }
 
 model UserWine {
-  uw_no        String    @id @default(cuid())
-  us_no        String?
-  sh_no        String
-  wn_no        String?
-  uw_name      String    @db.VarChar(100)
-  uw_country   String    @db.VarChar(100)
-  uw_vintage   String    @db.VarChar(10)
-  uw_img       String?
-  purchased_at DateTime
-  created_at   DateTime  @default(now())
-  updated_at   DateTime  @updatedAt
-  disabled_at  DateTime?
-  uw_disabled  Boolean   @default(false)
-  shop         Shop      @relation(fields: [sh_no], references: [sh_no])
-  user         User?     @relation(fields: [us_no], references: [us_no])
-  wine         Wine?     @relation(fields: [wn_no], references: [wn_no])
+  uw_no          String    @id @default(cuid())
+  us_no          String?
+  sh_no          String
+  wn_no          String?
+  uw_name        String    @db.VarChar(100)
+  uw_country     String    @db.VarChar(100)
+  uw_vintage     String    @db.VarChar(10)
+  uw_img         String?
+  purchased_at   DateTime
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+  disabled_at    DateTime?
+  uw_disabled    Boolean   @default(false)
+  uw_price       Int?
+  uw_price_range Int?
+  shop           Shop      @relation(fields: [sh_no], references: [sh_no])
+  user           User?     @relation(fields: [us_no], references: [us_no])
+  wine           Wine?     @relation(fields: [wn_no], references: [wn_no])
 
   @@index([sh_no])
   @@index([us_no])

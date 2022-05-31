@@ -28,6 +28,8 @@ router.post(
     body('country').isString(),
     body('vintage').isString(),
     body('purchased_at').isISO8601(),
+    isIfExists('price').isNumeric(),
+    isIfExists('price_range').isNumeric(),
     validationFunc,
   ],
   authJWT,
