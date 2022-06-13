@@ -148,6 +148,7 @@ export const userWine = async (req, res) => {
       uw_name: true,
       uw_country: true,
       uw_vintage: true,
+      uw_price_range: true,
       purchased_at: true,
       shop: {
         select: {
@@ -348,6 +349,7 @@ export const userInfo = async (req, res) => {
       uw_name: true,
       uw_country: true,
       uw_vintage: true,
+      uw_price_range: true,
       purchased_at: true,
       shop: {
         select: {

@@ -99,6 +99,7 @@ export const findOneShop = async (sh_no) => {
           uw_no: true,
           uw_name: true,
           uw_vintage: true,
+          uw_price_range: true,
           purchased_at: true,
           wine: {
             select: {
