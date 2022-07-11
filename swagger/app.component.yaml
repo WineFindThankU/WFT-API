@@ -1,0 +1,86 @@
+components:
+  securitySchemes:
+    AccessToken:
+      type: http
+      scheme: bearer
+    RefreshToken:
+      type: http
+      scheme: bearer 
+  schemas:
+    validationError:
+      required:
+        - statusCode
+        - errors
+        - message
+      properties: 
+        statusCode: 
+          type: integer
+          description: 응답 코드
+        errors: 
+          type: array
+          description: 에러 코드
+        message: 
+          type: string
+          description: 응답 메시지
+      default: 
+        statusCode: 400
+        errors: []
+        message: 잘못된 요청
+
+    Error: 
+      required:
+        - statusCode
+        - error
+        - message
+      properties: 
+        statusCode: 
+          type: integer
+          description: 응답 코드
+        error: 
+          type: string
+          description: 에러 코드
+        message: 
+          type: string
+          description: 응답 메시지
+
+    accessTokenError:
+      $ref: '#/components/schemas/Error'
+      default: 
+        statusCode: 401
+        error: EXPIRED_ACCESS_TOKEN
+        message: 만료된 토큰
+
+    refreshTokenError:
+      $ref: '#/components/schemas/Error'
+      default: 
+        statusCode: 401
+        error: EXPIRED_REFRESH_TOKEN
+        message: 만료된 토큰
+
+    successResponse: 
+      required:
+        - statusCode
+        - message
+      properties: 
+        statusCode: 
+          type: integer
+          description: 응답 코드
+        message: 
+          type: string
+          description: 응답 메시지
+          
+  parameters:
+    page: 
+      name: page
+      in: query
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer

@@ -1,0 +1,197 @@
+components:    
+  schemas:
+    signUpRequest: 
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+          format: email
+          description: 회원 이메일
+        type:
+          type: string
+          enum: [ EMAIL, NAVER, KAKAO, APPLE, GOOGLE, FACEBOOK]
+          description: 회원 경로
+        sns_id:
+          type: string
+          description: 회원 SNS ID (소셜 회원일 시 사용)
+        pwd:
+          type: string
+          description: 회원 비밀번호 (이메일 회원일 시 사용)
+        nick:
+          type: string
+          description: 회원 닉네임
+        birthday:
+          type: string
+          format: date
+          description: 회원 생년월일
+        age:
+          type: integer
+          description: 회원 나이
+        gender:
+          type: string
+          enum: [FEMALE, MALE]
+          description: 회원 성별
+        taste_type:
+          type: integer
+          description: 회원 취향 번호
+        taste_data:
+          type: object
+          description: 회원 취향 데이터
+
+    userWine:
+      properties:
+        uw_no:
+          type: string
+          description: 유저와인 고유값
+        uw_name: 
+          type: string
+          description: 유저와인 이름
+        uw_country: 
+          type: string
+          description: 유저와인 원산지
+        uw_vintage: 
+          type: string
+          description: 유저와인 빈티지
+        uw_price_range: 
+          type: integer
+          description: 유저와인 가격대
+        purchased_at: 
+          type: string
+          format: date
+          description: 유저와인 구매연도
+        shop:
+          type: object
+          description: 와인샵 정보
+          properties:
+            sh_no:
+              type: string
+              description: 와인샵 고유값
+            sh_name: 
+              type: string
+              description: 와인샵 이름
+            sh_category: 
+              type: string
+              description: 와인샵 분류
+            sh_url: 
+              type: string
+              description: 와인샵 링크
+            sh_time: 
+              type: object
+              description: 와인샵 운영시간
+        wine:
+          type: object
+          description: 와인 정보
+          properties:
+            wn_no:
+              type: string
+              description: 와인 고유값
+            wn_name: 
+              type: string
+              description: 와인 이름
+            wn_name_en: 
+              type: string
+              description: 와인 이름 (영어)
+            wn_kind: 
+              type: string
+              description: 와인 종류
+            wn_country: 
+              type: string
+              description: 와인 생산지
+            wn_alcohol: 
+              type: string
+              description: 와인 알코올
+            wn_img: 
+              type: string
+              description: 와인 이미지
+            wn_category: 
+              type: string
+              description: 와인 분류
+
+    userWineSuccessResponse:
+      required:
+        - statusCode
+        - message
+        - data
+      properties: 
+        statusCode: 
+          type: integer
+          description: 응답 코드
+        message: 
+          type: string
+          description: 응답 메시지
+        data: 
+          type: object
+          description: 데이터
+          properties: 
+            count: 
+              type: integer
+              description: 리스트 카운트 
+            next: 
+              type: boolean
+              description: 다음 페이지 여부 
+            list: 
+              type: array
+              description: 리스트 
+              itmes:
+                $ref: '#/components/schemas/userWine'
+
+    userShop:
+      properties:
+        uh_bookmark:
+          type: boolean
+          description: 즐겨찾기 여부
+        uh_wine_cnt: 
+          type: integer
+          description: 등록된 와인
+        shop:
+          type: object
+          description: 와인샵 정보
+          properties:
+            sh_no:
+              type: string
+              description: 와인샵 고유값
+            sh_name: 
+              type: string
+              description: 와인샵 이름
+            sh_category: 
+              type: string
+              description: 와인샵 분류
+            sh_url: 
+              type: string
+              description: 와인샵 링크
+            sh_time: 
+              type: object
+              description: 와인샵 운영시간
+            sh_img: 
+              type: object
+              description: 와인샵 이미지
+
+    userShopSuccessResponse:
+      required:
+        - statusCode
+        - message
+        - data
+      properties: 
+        statusCode: 
+          type: integer
+          description: 응답 코드
+        message: 
+          type: string
+          description: 응답 메시지
+        data: 
+          type: object
+          description: 데이터
+          properties: 
+            count: 
+              type: integer
+              description: 리스트 카운트 
+            next: 
+              type: boolean
+              description: 다음 페이지 여부 
+            list: 
+              type: array
+              description: 리스트 
+              itmes:
+                $ref: '#/components/schemas/userShop'
