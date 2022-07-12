@@ -195,3 +195,65 @@ components:
               description: 리스트 
               itmes:
                 $ref: '#/components/schemas/userShop'
+
+    user:
+      properties:
+        us_id:
+          type: string
+          format: email
+          description: 회원 아이디
+        us_nick: 
+          type: string
+          description: 회원 닉네임
+        taste_type: 
+          type: string
+          description: 회원 취향
+
+    userInfoSuccessResponse:
+      required:
+        - statusCode
+        - message
+        - data
+      properties: 
+        statusCode: 
+          type: integer
+          description: 응답 코드
+        message: 
+          type: string
+          description: 응답 메시지
+        data: 
+          type: object
+          description: 데이터
+          properties: 
+            user:
+              $ref: '#/components/schemas/user'
+            wine:
+              type: object
+              properties:
+                count:
+                  type: integer
+                  description: 개수
+                data:
+                  type: array
+                  itmes:
+                    $ref: '#/components/schemas/userWine'
+            shop:
+              type: object
+              properties:
+                count:
+                  type: integer
+                  description: 개수
+                data:
+                  type: array
+                  itmes:
+                    $ref: '#/components/schemas/userShop'
+            bookmark:
+              type: object
+              properties:
+                count:
+                  type: integer
+                  description: 개수
+                data:
+                  type: array
+                  itmes:
+                    $ref: '#/components/schemas/userShop'

@@ -122,7 +122,7 @@ router.post(
  *     security:
  *       - AccessToken: []
  *     responses:
- *       201:
+ *       200:
  *         description: 성공
  *         content:
  *           application/json:
@@ -147,7 +147,7 @@ router.delete('/', authJWT, userDisable)
  *       - $ref: '#/components/parameters/page'
  *       - $ref: '#/components/parameters/limit'
  *     responses:
- *       201:
+ *       200:
  *         description: 성공
  *         content:
  *           application/json:
@@ -211,7 +211,7 @@ router.get(
  *       - $ref: '#/components/parameters/page'
  *       - $ref: '#/components/parameters/limit'
  *     responses:
- *       201:
+ *       200:
  *         description: 성공
  *         content:
  *           application/json:
@@ -262,7 +262,7 @@ router.get(
  *       - $ref: '#/components/parameters/page'
  *       - $ref: '#/components/parameters/limit'
  *     responses:
- *       201:
+ *       200:
  *         description: 성공
  *         content:
  *           application/json:
@@ -300,6 +300,87 @@ router.get(
   userBookmark,
 )
 
+/**
+ * @openapi
+ * /user/info:
+ *   get:
+ *     tags:
+ *       - User
+ *     summary: 마이페이지
+ *     security:
+ *       - AccessToken: []
+ *     responses:
+ *       200:
+ *         description: 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/userInfoSuccessResponse'
+ *             example:
+ *               statusCode: 200
+ *               message: "마이페이지 조회 성공"
+ *               data:
+ *                 user:
+ *                   us_id: "test1111111@test.com"
+ *                   us_nick: "와린이-71549"
+ *                   taste_type: "1"
+ *                 wine:
+ *                   count: 1
+ *                   data: [{
+                    "uw_no": "cl3u6688h0002vz4rpgtq2tvm",
+                    "uw_name": "test",
+                    "uw_country": "korea",
+                    "uw_vintage": "2001",
+                    "uw_price_range": 10000,
+                    "purchased_at": "2001-01-01T15:00:00.000Z",
+                    "shop": {
+                        "sh_no": "cl09oopq40003eh4rrfguf50i",
+                        "sh_name": "라보데가",
+                        "sh_category": "PRIVATE",
+                        "sh_url": "http://instagram.com/labodega.kr",
+                        "sh_time": null
+                    },
+                    "wine": {
+                        "wn_no": "cl096cotx005831m0o75opumj",
+                        "wn_name": "비냐 아로모, 아로모 레세르바 프리바다 카르메네르",
+                        "wn_name_en": "Vina Aromo, Aromo Reserva Privada Carmenere",
+                        "wn_kind": "카르메네르 (Carmenere)",
+                        "wn_country": "칠레(Chile)",
+                        "wn_alcohol": "13.5~14.5 %",
+                        "wn_img": "http://image.toast.com/aaaacby/wft/empty/empty_105x105.png",
+                        "wn_category": "레드"
+                    }
+                }]
+ *               shop:
+ *                 count: 1
+ *                 data: [{
+                    "shop": {
+                        "sh_no": "cl09oopq40003eh4rrfguf50i",
+                        "sh_name": "라보데가",
+                        "sh_category": "PRIVATE",
+                        "sh_url": "http://instagram.com/labodega.kr",
+                        "sh_time": null,
+                        "sh_img": "http://image.toast.com/aaaacby/wft/empty/empty_160x82.png"
+                    },
+                    "uh_bookmark": true,
+                    "uh_wine_cnt": 1
+                }]
+ *               bookmark:
+ *                 count: 1
+ *                 data: [{
+ *                   "shop": {
+                        "sh_no": "cl09oopq40003eh4rrfguf50i",
+                        "sh_name": "라보데가",
+                        "sh_category": "PRIVATE",
+                        "sh_url": "http://instagram.com/labodega.kr",
+                        "sh_time": null,
+                        "sh_img": "http://image.toast.com/aaaacby/wft/empty/empty_160x82.png"
+                    },
+                    "uh_bookmark": true,
+                    "uh_wine_cnt": 1
+                }]
+ *
+ */
 router.get('/info', authJWT, userInfo)
 
 export default router
