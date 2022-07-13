@@ -1,11 +1,4 @@
 components:
-  parameters:
-    keyword:
-      name: keyword
-      in: query
-      schema:
-        type: string
-        
   schemas:
     wine:
       properties:

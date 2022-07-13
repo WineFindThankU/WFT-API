@@ -11,7 +11,7 @@ components:
           description: 회원 이메일
         type:
           type: string
-          enum: [ EMAIL, NAVER, KAKAO, APPLE, GOOGLE, FACEBOOK]
+          enum: [ EMAIL, NAVER, KAKAO, APPLE, GOOGLE, FACEBOOK ]
           description: 회원 경로
         sns_id:
           type: string
@@ -73,6 +73,7 @@ components:
               description: 와인샵 이름
             sh_category: 
               type: string
+              enum: [ PRIVATE, CHAIN, CONVENIENCE, SUPERMARKET, WAREHOUSE, DEPARTMENT, ETC ]
               description: 와인샵 분류
             sh_url: 
               type: string

@@ -1,0 +1,101 @@
+components:
+  schemas:
+    shop:
+      properties:
+        sh_no: 
+          type: string
+          description: 와인샵 고유값
+        sh_name: 
+          type: string
+          description: 와인샵 이름
+        sh_category: 
+          type: string
+          enum: [ PRIVATE, CHAIN, CONVENIENCE, SUPERMARKET, WAREHOUSE, DEPARTMENT, ETC ]
+          description: 와인샵 카테고리
+        sh_address: 
+          type: string
+          description: 와인샵 주소
+        sh_tell: 
+          type: string
+          description: 와인샵 전화번호
+        sh_url: 
+          type: string
+          description: 와인샵 url
+        sh_latitude:
+          type: string
+          description: 와인샵 위도
+        sh_longitude: 
+          type: string
+          description: 와인샵 경도
+
+    shopListSuccessResponse:
+      required:
+        - statusCode
+        - message
+        - data
+      properties: 
+        statusCode: 
+          type: integer
+          description: 응답 코드
+        message: 
+          type: string
+          description: 응답 메시지
+        data: 
+          type: object
+          description: 데이터
+          properties: 
+            count: 
+              type: integer
+              description: 리스트 카운트 
+            next: 
+              type: boolean
+              description: 다음 페이지 여부 
+            list: 
+              type: array
+              description: 리스트 
+              itmes:
+                $ref: '#/components/schemas/shop'
+
+    shopDetailSuccessResponse:
+      properties:
+        sh_no: 
+          type: string
+          description: 와인샵 고유값
+        sh_name: 
+          type: string
+          description: 와인샵 이름
+        sh_category: 
+          type: string
+          enum: [ PRIVATE, CHAIN, CONVENIENCE, SUPERMARKET, WAREHOUSE, DEPARTMENT, ETC ]
+          description: 와인샵 카테고리
+        sh_address: 
+          type: string
+          description: 와인샵 주소
+        sh_tell: 
+          type: string
+          description: 와인샵 전화번호
+        sh_url: 
+          type: string
+          description: 와인샵 url
+        sh_latitude:
+          type: string
+          description: 와인샵 위도
+        sh_longitude: 
+          type: string
+          description: 와인샵 경도
+        sh_bookmark: 
+          type: boolean
+          description: 와인샵 즐겨찾기
+        userWines:
+          type: array
+          description: 등록된 와인 리스트
+          items:
+            $ref: '#/components/schemas/userWine'
+
+    shopBookmarkRequest:
+      required:
+        - bookmark
+      properties:
+        bookmark:
+          type: boolean
+          description: 즐겨찾기 여부

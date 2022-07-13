@@ -84,3 +84,34 @@ components:
       in: query
       schema:
         type: integer
+        
+    type:
+      name: type
+      in: query
+      schema:
+        type: string
+        enum: [ keyword, location ]
+        
+    longitude:
+      name: longitude
+      in: query
+      schema:
+        type: integer
+
+    latitude:
+      name: latitude
+      in: query
+      schema:
+        type: integer
+        
+    radius:
+      name: latitude
+      in: query
+      schema:
+        type: integer
+
+    keyword:
+      name: keyword
+      in: query
+      schema:
+        type: string
