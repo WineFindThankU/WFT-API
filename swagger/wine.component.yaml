@@ -1,0 +1,108 @@
+components:
+  parameters:
+    keyword:
+      name: keyword
+      in: query
+      schema:
+        type: string
+        
+  schemas:
+    wine:
+      properties:
+        wn_no:
+          type: string
+          description: 와인 고유값
+        wn_brand: 
+          type: string
+          description: 와인 브랜드
+        wn_name: 
+          type: string
+          description: 와인 이름
+        wn_name_en: 
+          type: string
+          description: 와인 이름 (영어)
+        wn_country: 
+          type: string
+          description: 와인 생산국
+        wn_nation: 
+          type: string
+          description: 와인 생산지
+        wn_kind: 
+          type: string
+          description: 와인 종류
+        wn_alcohol: 
+          type: string
+          description: 와인 알코올
+        wn_img: 
+          type: string
+          description: 와인 이미지
+
+    wineListSuccessResponse:
+      required:
+        - statusCode
+        - message
+        - data
+      properties: 
+        statusCode: 
+          type: integer
+          description: 응답 코드
+        message: 
+          type: string
+          description: 응답 메시지
+        data: 
+          type: object
+          description: 데이터
+          properties: 
+            count: 
+              type: integer
+              description: 리스트 카운트 
+            next: 
+              type: boolean
+              description: 다음 페이지 여부 
+            list: 
+              type: array
+              description: 리스트 
+              itmes:
+                $ref: '#/components/schemas/wine'
+
+    wineAddRequest:
+      required:
+        - sh_no
+        - name
+        - country
+        - vintage
+        - purchased_at
+      properties:
+        sh_no:
+          type: string
+          description: 와인샵 고유값
+        wn_no:
+          type: string
+          description: 와인 고유값
+        name:
+          type: string
+          description: 와인 이름
+        country:
+          type: string
+          description: 와인 생산국
+        vintage: 
+          type: string
+          description: 와인 빈티지 
+        purchased_at: 
+          type: string
+          format: date
+          description: 와인 구매일
+        price: 
+          type: integer
+          description: 와인 가격
+        price_range:
+          type: integer
+          description: 와인 가격대
+
+    wineDeleteRequest:
+      required:
+        - uw_no
+      properties:
+        uw_no:
+          type: string
+          description: 유저와인 고유값

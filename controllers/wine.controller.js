@@ -52,7 +52,7 @@ export const wineAdd = async (req, res) => {
 
   await createUserWine(user.us_no, sh_no, wn_no, data)
 
-  return res.status(201).json({ statusCode: 200, message: '와인 등록 성공' })
+  return res.status(201).json({ statusCode: 201, message: '와인 등록 성공' })
 }
 
 export const wineDelete = async (req, res) => {
@@ -71,5 +71,5 @@ export const wineDelete = async (req, res) => {
 
   await deleteUserWine(user.us_no, sh_no, uw_no)
 
-  return res.status(201).json({ statusCode: 200, message: '와인 삭제 성공' })
+  return res.status(200).json({ statusCode: 200, message: '와인 삭제 성공' })
 }

@@ -98,7 +98,7 @@ components:
               description: 와인 종류
             wn_country: 
               type: string
-              description: 와인 생산지
+              description: 와인 생산국
             wn_alcohol: 
               type: string
               description: 와인 알코올
