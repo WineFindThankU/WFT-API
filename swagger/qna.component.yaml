@@ -1,0 +1,79 @@
+components:    
+  schemas:
+    qna:
+      properties:
+        qa_no:
+          type: string
+          description: 1:1문의 고유값
+        us_no: 
+          type: string
+          description: 유저 고유값
+        qa_email: 
+          type: string
+          format: email
+          description: 1:1문의 이메일
+        qa_title: 
+          type: string
+          description: 1:1문의 제목
+        qa_content: 
+          type: string
+          description: 1:1문의 내용
+        qa_reply: 
+          type: string
+          description: 1:1문의 답변
+        qa_status: 
+          type: string
+          enum: [ OPEN, CLOSED ]
+        created_at: 
+          type: string
+          format: date
+          description: 1:1문의 작성일
+        closed_at: 
+          type: string
+          format: date
+          description: 1:1문의 답변 작성일
+
+    qnaListSuccessResponse:
+      required:
+        - statusCode
+        - message
+        - data
+      properties: 
+        statusCode: 
+          type: integer
+          description: 응답 코드
+        message: 
+          type: string
+          description: 응답 메시지
+        data: 
+          type: object
+          description: 데이터
+          properties: 
+            count: 
+              type: integer
+              description: 리스트 카운트 
+            next: 
+              type: boolean
+              description: 다음 페이지 여부 
+            list: 
+              type: array
+              description: 리스트 
+              itmes:
+                $ref: '#/components/schemas/qna'
+
+    qnaWriteRequest:
+      required:
+        - email
+        - title
+        - content
+      properties:
+        email:
+          type: string
+          format: email
+          description: 1:1문의 이메일
+        title: 
+          type: string
+          description: 1:1문의 제목
+        content: 
+          type: string
+          description: 1:1문의 내용
