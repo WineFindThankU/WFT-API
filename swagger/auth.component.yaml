@@ -1,0 +1,64 @@
+components:    
+  schemas:
+    signInRequest: 
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+          format: email
+          description: 회원 이메일
+        type:
+          type: string
+          enum: [ EMAIL, NAVER, KAKAO, APPLE, GOOGLE, FACEBOOK]
+          description: 회원 경로
+        sns_id:
+          type: string
+          description: 회원 SNS ID (소셜 회원일 시 사용)
+        pwd:
+          type: string
+          description: 회원 비밀번호 (이메일 회원일 시 사용)
+
+    signInSuccessResponse:
+      required:
+        - statusCode
+        - message
+        - data
+      properties: 
+        statusCode: 
+          type: integer
+          description: 응답 코드
+        message: 
+          type: string
+          description: 응답 메시지
+        data: 
+          type: object
+          description: 데이터
+          properties: 
+            accessToken: 
+              type: integer
+              description: accessToken
+            refreshToken: 
+              type: boolean
+              description: refreshToken
+
+    signNewSuccessResponse:
+      required:
+        - statusCode
+        - message
+        - data
+      properties: 
+        statusCode: 
+          type: integer
+          description: 응답 코드
+        message: 
+          type: string
+          description: 응답 메시지
+        data: 
+          type: object
+          description: 데이터
+          properties: 
+            accessToken: 
+              type: integer
+              description: accessToken
