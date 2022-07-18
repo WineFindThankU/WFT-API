@@ -71,7 +71,7 @@ export const signUp = async (req, res) => {
     }
 
     if (data.nick && (await checkNick(data.nick))) {
-      data.nick = '와린이-' + generate({ length: 5, charset: 'numeric' })
+      data.nick = data.nick + '-' + generate({ length: 5, charset: 'numeric' })
     }
 
     const tempData = {}
