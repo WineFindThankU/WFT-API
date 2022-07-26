@@ -6,6 +6,8 @@ export const gender = ['MALE', 'FEMALE']
 
 export const searchType = ['LOCATION', 'KEYWORD']
 
+export const os = ['ANDROID', 'IOS']
+
 export const shopCategory = [
   'PRIVATE',
   'CHAIN',

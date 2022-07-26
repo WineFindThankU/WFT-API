@@ -4,6 +4,7 @@ import authRouter from './auth.route.js'
 import qnaRouter from './qna.route.js'
 import shopRouter from './shop.route.js'
 import wineRouter from './wine.route.js'
+import appRouter from './app.route.js'
 
 const router = Router()
 
@@ -103,5 +104,12 @@ router.use('/shop', shopRouter)
  *    description: Wine 관련 API
  */
 router.use('/wine', wineRouter)
+/**
+ *  @openapi
+ *  tags:
+ *    name: App
+ *    description: App 관련 API
+ */
+router.use('/app', appRouter)
 
 export default router

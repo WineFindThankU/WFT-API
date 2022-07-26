@@ -8,6 +8,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Version {
+  vs_no       String     @id @default(cuid())
+  vs_os       OS
+  vs_force    Boolean
+  vs_version  String     @db.VarChar(20)
+  created_at  DateTime   @default(now())
+  @@map("tb_version")
+}
+
 model User {
   us_no       String     @id @default(cuid())
   us_id       String     @db.VarChar(100)
@@ -203,4 +212,9 @@ enum UserType {
 enum Gender {
   MALE
   FEMALE
+}
+
+enum OS {
+  ANDROID
+  IOS
 }
